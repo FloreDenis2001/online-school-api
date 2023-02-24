@@ -25,42 +25,29 @@ public class OnlineSchoolApiApplication {
     @Bean
     CommandLineRunner commandLineRunner(StudentService studentService, StudentRepo studentRepo, CourseRepo courseRepo) {
         return args -> {
-            Optional<Student> s = studentRepo.findStudentsByEmail("denis@yahoo.com");
+            System.out.println("Denis");
+//            Optional<Student> s = studentRepo.findStudentsByEmail("denis@yahoo.com");
+//
+//            System.out.println(s.get());
+//            Student student = s.get();
+//            student.initLazyCollection();
+//
+//
+//            Course curs=courseRepo.findById(3L).get();
+//
+//
+//            Enrolment enrolment = Enrolment.builder().course(curs).createAt(LocalDate.now()).build();
+//
+//            student.addEnrol(enrolment);
+//            Set<Enrolment> enrolments =student.getEnrolemntsList();
+//            for(Enrolment x : enrolments){
+//                System.out.println(x);
+//            }
 
-            System.out.println(s.get());
-            Student student = s.get();
-            student.initLazyCollection();
-
-
-            Course curs=courseRepo.findById(3L).get();
-
-
-            Enrolment enrolment = Enrolment.builder().course(curs).createAt(LocalDate.now()).build();
-
-            student.addEnrol(enrolment);
-            Set<Enrolment> enrolments =student.getEnrolemntsList();
-            for(Enrolment x : enrolments){
-                System.out.println(x);
-            }
-
-            studentRepo.saveAndFlush(student);
-
-
-
-
-
-
-
-
-
-
-
+//            studentRepo.saveAndFlush(student);
 
 
         };
-
-
-
 
 
     }

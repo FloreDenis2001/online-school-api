@@ -103,29 +103,19 @@ public class Student implements Comparable<Student> {
 
     @OneToMany(mappedBy = "student",
             cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
-
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @JsonManagedReference
-    @Builder.Default
-    private Set<Book> bookList=new TreeSet<>();
+    private List<Book> bookList=new ArrayList<>();
 
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @Builder.Default
     @JsonManagedReference
-    private SortedSet<Enrolment> enrolemntsList=new TreeSet<>();
+    private List<Enrolment> enrolemntsList=new ArrayList<>();
 
-     public void initLazyCollection(){
-
-         this.enrolemntsList.size();
-         this.bookList.size();
-     }
+//     public void initLazyCollection(){
+//
+//         this.enrolemntsList.size();
+//         this.bookList.size();
+//     }
 
 
     public void addBook(Book book){

@@ -19,7 +19,7 @@ public class StudentService {
         this.studentRepo = studentRepo;
     }
 
-    public Set<Book> getAllListByStudent(String email) {
+    public List<Book> getAllListByStudent(String email) {
         Optional<Student> x = studentRepo.findStudentsByEmail(email);
         if (!x.isEmpty()) {
             return x.get().getBookList();

@@ -37,13 +37,11 @@ public class Enrolment implements Comparable<Enrolment> {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "student_id_fk"))
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonBackReference
     private Student student;
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "course_id_fk"))
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonBackReference
     private Course course;
 
@@ -64,13 +62,6 @@ public class Enrolment implements Comparable<Enrolment> {
 
     @Override
     public int compareTo(Enrolment o) {
-//        if (this.getStudent().getId() > o.getStudent().getId() && this.getCourse().getId() > o.getCourse().getId()) {
-//            return 1;
-//        } else if (this.getStudent().getId() < o.getStudent().getId() && this.getCourse().getId() < o.getCourse().getId()) {
-//            return -1;
-//        } else {
-//            return 0;
-//        }
 
         if(this.equals(o)){
             return 0;

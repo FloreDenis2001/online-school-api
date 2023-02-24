@@ -1,6 +1,7 @@
 package com.example.onlineschoolapi.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -79,6 +80,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name="student_id",referencedColumnName = "id",foreignKey = @ForeignKey(name="student_id_fk"))
+    @JsonBackReference
     private Student student;
 
 }
