@@ -20,27 +20,27 @@ public class EnrolmentService {
         this.enrolemmtRepo = enrolemmtRepo;
     }
 
-    public boolean verifyDuplicateByStudentAndCourse(Enrolment e) {
-        List<Enrolment> enrolmentList = enrolemmtRepo.findAll();
-        boolean flag = true;
-        for (Enrolment t : enrolmentList) {
-            if (t.getCourse().getId() == e.getCourse().getId() && t.getStudent().getId() == e.getStudent().getId()) {
-                flag = true;
-            } else {
-                flag = false;
-            }
-        }
-        return flag;
-    }
-
-    public void addEnrol(Enrolment e) throws EnrolmentAlreadyExist {
-//        List<Enrolment> enrolmentList = e.getStudent().getEnrolemntsList();
-//        for (Enrolment x : enrolmentList) {
-//            if (x.getStudent().getId() == e.getStudent().getId() && x.getCourse().getId() == e.getCourse().getId()) {
-//
+//    public boolean verifyDuplicateByStudentAndCourse(Enrolment e) {
+//        List<Enrolment> enrolmentList = enrolemmtRepo.findAll();
+//        boolean flag = true;
+//        for (Enrolment t : enrolmentList) {
+//            if (t.getCourse().getId() == e.getCourse().getId() && t.getStudent().getId() == e.getStudent().getId()) {
+//                flag = true;
+//            } else {
+//                flag = false;
 //            }
 //        }
-    }
+//        return flag;
+//    }
+//
+//    public void addEnrol(Enrolment e) throws EnrolmentAlreadyExist {
+////        List<Enrolment> enrolmentList = e.getStudent().getEnrolemntsList();
+////        for (Enrolment x : enrolmentList) {
+////            if (x.getStudent().getId() == e.getStudent().getId() && x.getCourse().getId() == e.getCourse().getId()) {
+////
+////            }
+////        }
+//    }
 
 
 }

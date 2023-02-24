@@ -25,7 +25,6 @@ public class OnlineSchoolApiApplication {
     @Bean
     CommandLineRunner commandLineRunner(StudentService studentService, StudentRepo studentRepo, CourseRepo courseRepo) {
         return args -> {
-            System.out.println("Denis");
 //            Optional<Student> s = studentRepo.findStudentsByEmail("denis@yahoo.com");
 //
 //            System.out.println(s.get());

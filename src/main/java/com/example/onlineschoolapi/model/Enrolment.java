@@ -1,76 +1,71 @@
 package com.example.onlineschoolapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+//import jakarta.annotation.Nullable;
+//import jakarta.persistence.*;
+//import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.Null;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-
-import static javax.persistence.GenerationType.SEQUENCE;
+import java.time.LocalDateTime;
 
 @Table(name = "enrolment")
 @Entity(name = "Enrolment")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@Builder
-@EqualsAndHashCode
-public class Enrolment implements Comparable<Enrolment> {
-
+@AllArgsConstructor
+@SuperBuilder
+public class Enrolment {
     @Id
-
     @SequenceGenerator(
-            name = "enrol_sequence",
-            sequenceName = "enrol_sequence",
+            name = "enrolment_sequence",
+            sequenceName = "enrolment_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "enrol_sequence"
+            strategy = GenerationType.SEQUENCE,
+            generator = "enrolment_sequence"
     )
-    @Column(
-            name = "id"
-    )
-    @EqualsAndHashCode.Exclude
-    private Long id;
+    private long id;
+
     @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "student_id_fk"))
+    @JoinColumn(name = "id_student")
     @JsonBackReference
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "course_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "course_id_fk"))
+    @JoinColumn(name = "id_course")
     @JsonBackReference
     private Course course;
 
-    @Column(
-            name = "create_at",
-            nullable = false,
-            columnDefinition = "DATE"
-    )
-    @NotNull
-    private LocalDate createAt;
+    LocalDate created_at;
 
     @Override
-
-    public boolean equals(Object o){
-        Enrolment er=(Enrolment) o;
-        return this.getStudent().getId()==er.getStudent().getId() && this.getCourse().getId()==er.getCourse().getId();
+    public String toString() {
+        return "Enrolment{" +
+                "id=" + id +
+                ", student=" + student.getFirstName() + " " + student.getSecondName() +
+                ", course=" + course.getName() +
+                ", created_at=" + created_at +
+                '}';
     }
 
     @Override
-    public int compareTo(Enrolment o) {
-
-        if(this.equals(o)){
-            return 0;
-        }else if(o.getId()==null){
-            return -1;
-        }else{
-            return 1;
-        }
+    public boolean equals(Object obj){
+        Enrolment compareEnrollment = (Enrolment)obj;
+        return compareEnrollment.getStudent().getId() == this.getStudent().getId() && compareEnrollment.getCourse().getId() == this.getCourse().getId();
     }
 
-
+    public Enrolment(Student student, Course course){
+        this.student = student;
+        this.course = course;
+        this.created_at=LocalDate.now();
+    }
 }
