@@ -1,18 +1,15 @@
 package com.example.onlineschoolapi.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -22,6 +19,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class Student implements Comparable<Student> {
 
 
@@ -100,23 +98,34 @@ public class Student implements Comparable<Student> {
         return text;
     }
 
-    @Override
-    public boolean equals(Object o){
-        return this.email.compareTo(((Student)o).getEmail())==0;
-    }
+
 
 
     @OneToMany(mappedBy = "student",
             cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonManagedReference
-    private List<Book> bookList=new ArrayList<>();
+    @Builder.Default
+    private Set<Book> bookList=new TreeSet<>();
 
 
-    @OneToMany(mappedBy = "student",cascade=CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Builder.Default
     @JsonManagedReference
-    private List<Enrolemnt> enrolemntsList=new ArrayList<>();
+    private SortedSet<Enrolment> enrolemntsList=new TreeSet<>();
 
+     public void initLazyCollection(){
 
+         this.enrolemntsList.size();
+         this.bookList.size();
+     }
 
 
     public void addBook(Book book){
@@ -126,9 +135,10 @@ public class Student implements Comparable<Student> {
 
     }
 
-    public void addEnrol(Enrolemnt enrolemnt){
-        enrolemntsList.add(enrolemnt);
-        enrolemnt.setStudent(this);
+
+    public void addEnrol(Enrolment enrolment){
+        enrolemntsList.add(enrolment);
+        enrolment.setStudent(this);
     }
 
 

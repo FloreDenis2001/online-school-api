@@ -2,10 +2,8 @@ package com.example.onlineschoolapi.model;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -22,6 +20,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Course {
     @Id
     @SequenceGenerator(
@@ -65,10 +64,14 @@ public class Course {
 
 
     @OneToMany(mappedBy = "course",cascade=CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonManagedReference
-    private List<Enrolemnt> enrolemntsList=new ArrayList<>();
-    @Override
-    public boolean equals(Object o){
-        return this.departament.compareTo(((Course)o).getDepartament())==0;
+    private List<Enrolment> enrolemntsList=new ArrayList<>();
+
+    public void add(Enrolment enrolment){
+
+        enrolemntsList.add(enrolment);
+        enrolment.setCourse(this);
     }
+
 }

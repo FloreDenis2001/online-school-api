@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class StudentService {
@@ -18,7 +19,7 @@ public class StudentService {
         this.studentRepo = studentRepo;
     }
 
-    public List<Book> getAllListByStudent(String email) {
+    public Set<Book> getAllListByStudent(String email) {
         Optional<Student> x = studentRepo.findStudentsByEmail(email);
         if (!x.isEmpty()) {
             return x.get().getBookList();
