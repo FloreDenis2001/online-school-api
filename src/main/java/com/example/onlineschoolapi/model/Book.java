@@ -1,85 +1,76 @@
 package com.example.onlineschoolapi.model;
-
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
-import java.time.LocalDate;
-
-import static javax.persistence.GenerationType.SEQUENCE;
-
-@Table(name = "book")
-@Entity(name = "Book")
-@Data
+@Table(name="book")
+@Entity(name="Book")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Builder
+@Data
 public class Book {
-
     @Id
     @SequenceGenerator(
-            name = "book_sequecene",
+            name="book_sequence",
             sequenceName = "book_sequence",
             allocationSize = 1
     )
-
-    @GeneratedValue
-            (
-                    strategy = SEQUENCE,
-                    generator = "book_sequence"
-            )
-    @Column(
-            name = "id"
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "books_sequence"
     )
     private Long id;
 
-
     @Column(
-            name = "book_name",
+            name="title",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    @NotEmpty
-    @Size(min = 3, message = "Titlul carti trebuie sa contina minim 3 caractere ! ")
-    private String bookName;
+    @Size(min = 2, message = "min title length should be 2")
+    String title;
 
+    @Size(min = 2, message = "min author length should be 2")
+    @Column( name="author",
+            nullable = false)
+    String author;
 
-    @Column(
-            name = "create_at",
-            nullable = false,
-            columnDefinition = "DATE"
+    @Column( name="price",
+            nullable = false)
+    @DecimalMin(value = "0.1",message = "Price should have a value.")
+    double price;
+
+    @Column( name="stars")
+    Long stars;
+
+    @ManyToOne
+    @JoinColumn(
+            name="user_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name="user_id_fk")
+
     )
+    @JsonBackReference
+    private Student student;
 
-    @NotNull
-    private LocalDate createdAt;
+
 
 
     @Override
     public String toString() {
-        String text = "ID :" + this.id + "\n";
-        text += "Book Name : " + this.bookName + "\n";
-        text += "Created At:  " + this.createdAt + "\n";
-        return text;
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price +
+                ", stars=" + stars +
+                '}';
     }
-
-
-    @Override
-    public boolean equals(Object o){
-        return this.bookName.compareTo(((Book)o).getBookName())==0;
-    }
-
-    @ManyToOne
-    @JoinColumn(name="student_id",referencedColumnName = "id",foreignKey = @ForeignKey(name="student_id_fk"))
-    private Student student;
-
 }
-

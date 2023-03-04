@@ -21,14 +21,6 @@ public class EnrolmentService {
     }
 
 
-    public void addEnrol(Enrolment e) throws EnrolmentAlreadyExist {
-        SortedSet<Enrolment> enrolmentList=e.getStudent().getEnrolemntsList();
-        for(Enrolment x:enrolmentList){
-            if(x.getStudent().getId()==e.getStudent().getId() && x.getCourse().getId()==e.getCourse().getId()){
-
-            }
-        }
-    }
 
 
 }

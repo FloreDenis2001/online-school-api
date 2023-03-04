@@ -1,77 +1,68 @@
 package com.example.onlineschoolapi.model;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
 @Table(name="course")
 @Entity(name="Course")
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@SuperBuilder
 public class Course {
+
     @Id
     @SequenceGenerator(
             name="course_sequence",
             sequenceName = "course_sequence",
             allocationSize = 1
     )
-
-    @GeneratedValue(strategy = SEQUENCE,
-            generator = "coruse_sequcence")
-
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "course_sequence"
+    )
     private Long id;
 
-    @Column(
-            name="name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    @NotEmpty
-    @Size(min=3,message = "Numele cursului trebuie sa contina minim 3 caractere ! ")
+
+    @NotNull
+    @Size(min = 2, message = "Numele are cel putin 2 litere!")
     private String name;
 
+    @NotNull
+    @Size(min = 2, message = "Departamentul are cel putin 2 litere !")
+    private String department;
 
-    @Column(
-            name="departament",
-            nullable = false,
-            columnDefinition ="TEXT"
+
+    @OneToMany(
+            mappedBy = "course",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
-    @NotEmpty
-    @Size(min=3,message = "Numele departamentului trebuie sa contina minim 3 caractere ! ")
-    private String departament;
-
-
-    @Override
-    public String toString(){
-        String text="Id :"+this.id+"\n";
-        text+="Name : "+this.name+"\n";
-        text+="Departament : "+this.departament+"\n";
-        return text;
-    }
-
-
-    @OneToMany(mappedBy = "course",cascade=CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonManagedReference
-    private List<Enrolment> enrolemntsList=new ArrayList<>();
+    List<Enrolment> enrolments = new ArrayList<>();
 
-    public void add(Enrolment enrolment){
-
-        enrolemntsList.add(enrolment);
+    public void addEnrolment(Enrolment enrolment){
+        this.enrolments.add(enrolment);
         enrolment.setCourse(this);
     }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", department='" + department + '\'' +
+                '}';
+    }
 }
