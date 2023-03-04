@@ -1,19 +1,12 @@
 package com.example.onlineschoolapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-//import jakarta.annotation.Nullable;
-//import jakarta.persistence.*;
-//import jakarta.validation.constraints.NotNull;
-//import jakarta.validation.constraints.Null;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Table(name = "enrolment")
 @Entity(name = "Enrolment")
@@ -21,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @SuperBuilder
 public class Enrolment {
     @Id
@@ -46,6 +40,12 @@ public class Enrolment {
     private Course course;
 
     LocalDate created_at;
+
+    public Enrolment(Student student, Course course, LocalDate created_at) {
+        this.student = student;
+        this.course = course;
+        this.created_at = created_at;
+    }
 
     @Override
     public String toString() {

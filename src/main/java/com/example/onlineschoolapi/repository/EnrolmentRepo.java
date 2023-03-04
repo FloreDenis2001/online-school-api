@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface EnrolmentRepo extends JpaRepository<Enrolment,Long> {
-//    @Query("select s from Enrolment s where s.student=?1 and s.course=?2")
-//    Optional<List<Enrolment>> verifyDuplicate(Student student, Course course);
+    @Query("select s from Enrolment s where s.student=?1 and s.course=?2")
+    Optional<Enrolment> findEnrolments(Long idStudent, Long IdCourse);
 }
 

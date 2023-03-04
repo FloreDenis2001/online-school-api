@@ -1,9 +1,6 @@
 package com.example.onlineschoolapi.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-//import jakarta.persistence.*;
-//import jakarta.validation.constraints.DecimalMax;
-//import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -56,7 +53,7 @@ public class Student {
     @OneToMany(
             mappedBy = "student",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JsonManagedReference
     List<Book> books= new ArrayList<>();
@@ -64,7 +61,7 @@ public class Student {
     @OneToMany(
             mappedBy = "student",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
 
     @JsonManagedReference
@@ -91,5 +88,10 @@ public class Student {
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 '}';
+    }
+
+
+    public boolean vfExistsBook(Book book){
+        return  this.books.contains(book);
     }
 }

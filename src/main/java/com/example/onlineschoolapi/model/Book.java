@@ -1,13 +1,11 @@
 package com.example.onlineschoolapi.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-//import jakarta.persistence.*;
-//import jakarta.validation.constraints.DecimalMin;
-//import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
 @Table(name="book")
@@ -17,6 +15,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Data
 public class Book {
     @Id
     @SequenceGenerator(
@@ -52,9 +51,6 @@ public class Book {
     Long stars;
 
     @ManyToOne
-//            (
-//            fetch = FetchType.LAZY
-//    )
     @JoinColumn(
             name="user_id",
             referencedColumnName = "id",
@@ -63,6 +59,9 @@ public class Book {
     )
     @JsonBackReference
     private Student student;
+
+
+
 
     @Override
     public String toString() {
