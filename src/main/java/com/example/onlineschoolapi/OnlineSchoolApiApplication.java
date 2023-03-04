@@ -3,9 +3,11 @@ package com.example.onlineschoolapi;
 import com.example.onlineschoolapi.dto.EnrollRequestStudentToCourse;
 import com.example.onlineschoolapi.model.Book;
 import com.example.onlineschoolapi.model.Course;
+import com.example.onlineschoolapi.model.Enrolment;
 import com.example.onlineschoolapi.model.Student;
 import com.example.onlineschoolapi.repository.BookRepository;
 import com.example.onlineschoolapi.repository.CourseRepo;
+import com.example.onlineschoolapi.repository.EnrolmentRepo;
 import com.example.onlineschoolapi.repository.StudentRepo;
 import com.example.onlineschoolapi.services.BookService;
 import com.example.onlineschoolapi.services.StudentService;
@@ -25,7 +27,7 @@ public class OnlineSchoolApiApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(BookService bookService, BookRepository bookRepository, StudentService studentService, StudentRepo studentRepo, CourseRepo courseRepo) {
+    CommandLineRunner commandLineRunner(EnrolmentRepo enrolmentRepo, BookService bookService, BookRepository bookRepository, StudentService studentService, StudentRepo studentRepo, CourseRepo courseRepo) {
         return args -> {
 
 //          Optional<Student> s = studentRepo.findStudentsByEmail("denis@yahoo.com");
@@ -91,11 +93,21 @@ public class OnlineSchoolApiApplication {
 //            }
 
 
-
-
 //            studentRepo.saveAndFlush(student);
 
+              /* Enrolment enrolment=enrolmentRepo.findById(1L).get();
+               System.out.println(enrolment);
+               studentService.removeEnrolment(enrolment);*/
 
+
+            Enrolment enrolment = enrolmentRepo.findById(2L).get();
+//
+//            enrolment.setStudent(null);
+//
+//            enrolment.setCourse(null);
+
+            enrolmentRepo.removeEnrolment(enrolment.getCourse().getId(), enrolment.getStudent().getId());
+            enrolmentRepo.saveAndFlush(enrolment);
         };
 
 
