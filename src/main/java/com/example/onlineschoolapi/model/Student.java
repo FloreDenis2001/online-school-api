@@ -78,6 +78,10 @@ public class Student {
         enrolment.setStudent(this);
     }
 
+    public void removeEnrolment(Enrolment enrolment){
+        this.enrolments.remove(enrolment);
+    }
+
 
     @Override
     public String toString() {

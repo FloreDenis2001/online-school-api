@@ -8,6 +8,7 @@ import com.example.onlineschoolapi.model.Course;
 import com.example.onlineschoolapi.model.Enrolment;
 import com.example.onlineschoolapi.model.Student;
 import com.example.onlineschoolapi.repository.CourseRepo;
+import com.example.onlineschoolapi.repository.EnrolmentRepo;
 import com.example.onlineschoolapi.repository.StudentRepo;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,14 @@ public class StudentService {
     private StudentRepo studentRepo;
     private CourseRepo courseRepo;
 
-    public StudentService(StudentRepo studentRepo, CourseRepo courseRepo) {
+    private EnrolmentRepo enrolmentRepo;
+
+    public StudentService(StudentRepo studentRepo, CourseRepo courseRepo, EnrolmentRepo enrolmentRepo) {
         this.studentRepo = studentRepo;
         this.courseRepo = courseRepo;
+        this.enrolmentRepo = enrolmentRepo;
     }
+
 
     public List<Student> getAllStudents() {
         List<Student> students = studentRepo.findAll();
@@ -82,5 +87,25 @@ public class StudentService {
         studentRepo.saveAndFlush(student.get());
     }
 
+    @Transactional
+    @Modifying
+    public void removeEnrolment(Enrolment enrolment) {
+        Optional<Student> student = studentRepo.findById(enrolment.getStudent().getId());
+        if (student.isEmpty()) {
+            throw new StudentDosentExist("Studentul nu exista ! ");
+        }
 
+        Student s = student.get();
+
+        Optional<Course> course = courseRepo.findById(enrolment.getCourse().getId());
+        if (course.isEmpty()) {
+            throw new StatusCourse("Cursul nu exista !");
+        }
+
+        Optional<Enrolment> enrol = enrolmentRepo.findEnrolmentsByStudentAndCourse(course.get().getId(), s.getId());
+        Enrolment findEnrolment = enrol.get();
+
+        s.removeEnrolment(enrolment);
+        studentRepo.saveAndFlush(s);
+    }
 }
