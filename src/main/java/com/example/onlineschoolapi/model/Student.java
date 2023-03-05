@@ -3,6 +3,8 @@ package com.example.onlineschoolapi.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 
 import javax.persistence.*;
@@ -12,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Table(name="student")
-@Entity(name="Student")
+@Table(name = "student")
+@Entity(name = "Student")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -28,7 +30,7 @@ public class Student {
             allocationSize = 1
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator =  "student_sequence")
+            generator = "student_sequence")
     Long id;
 
     @Column(name = "first_name",
@@ -52,37 +54,32 @@ public class Student {
 
     @OneToMany(
             mappedBy = "student",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            cascade = CascadeType.ALL
+
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
-    List<Book> books= new ArrayList<>();
+    List<Book> books = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "student",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
 
-    @JsonManagedReference
-    List<Enrolment> enrolments = new ArrayList<>();
-
-    public void addBook(Book book){
+    public void addBook(Book book) {
         this.books.add(book);
         book.setStudent(this);
     }
 
+    @JsonManagedReference
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "enrolled_coruse", joinColumns = {@JoinColumn(name = "student_id")},
+            inverseJoinColumns = {@JoinColumn(name = "course_id")})
+    private List<Course> enrolledCourses=new ArrayList<>();
 
-    public void addEnrolment(Enrolment enrolment){
-        this.enrolments.add(enrolment);
-        enrolment.setStudent(this);
+    public void addCourse(Course course){
+        enrolledCourses.add(course);
     }
 
-    public void removeEnrolment(Enrolment enrolment){
-        this.enrolments.remove(enrolment);
+    public void removeCourse(Course course){
+        enrolledCourses.remove(course);
     }
-
-
     @Override
     public String toString() {
         return "Student{" +
@@ -95,7 +92,8 @@ public class Student {
     }
 
 
-    public boolean vfExistsBook(Book book){
-        return  this.books.contains(book);
+    public boolean vfExistsBook(Book book) {
+        return this.books.contains(book);
     }
+
 }

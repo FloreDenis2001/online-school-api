@@ -1,5 +1,6 @@
 package com.example.onlineschoolapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +14,8 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name="course")
-@Entity(name="Course")
+@Table(name = "course")
+@Entity(name = "Course")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class Course {
 
     @Id
     @SequenceGenerator(
-            name="course_sequence",
+            name = "course_sequence",
             sequenceName = "course_sequence",
             allocationSize = 1
     )
@@ -44,18 +45,9 @@ public class Course {
     private String department;
 
 
-    @OneToMany(
-            mappedBy = "course",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    @JsonManagedReference
-    List<Enrolment> enrolments = new ArrayList<>();
-
-    public void addEnrolment(Enrolment enrolment){
-        this.enrolments.add(enrolment);
-        enrolment.setCourse(this);
-    }
+    @ManyToMany(mappedBy = "enrolledCourses", fetch = FetchType.EAGER)
+    @JsonBackReference
+    List<Student> students = new ArrayList<>();
 
     @Override
     public String toString() {

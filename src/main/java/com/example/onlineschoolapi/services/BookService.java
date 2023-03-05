@@ -65,12 +65,5 @@ public class BookService {
         return bookList;
     }
 
-    public void addBook(Book book) throws BookAlreadyExist{
-        Optional<Book> findBook=bookRepository.findById(book.getId());
-        if(findBook.isEmpty()){
-            bookRepository.save(book);
-        }else {
-            throw new BookAlreadyExist("Book already exist!");
-        }
-    }
+
 }

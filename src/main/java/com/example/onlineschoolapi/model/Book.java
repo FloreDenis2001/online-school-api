@@ -1,4 +1,5 @@
 package com.example.onlineschoolapi.model;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -8,8 +9,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
-@Table(name="book")
-@Entity(name="Book")
+@Table(name = "book")
+@Entity(name = "Book")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,7 +20,7 @@ import javax.validation.constraints.Size;
 public class Book {
     @Id
     @SequenceGenerator(
-            name="book_sequence",
+            name = "book_sequence",
             sequenceName = "book_sequence",
             allocationSize = 1
     )
@@ -30,37 +31,35 @@ public class Book {
     private Long id;
 
     @Column(
-            name="title",
+            name = "title",
             nullable = false,
             columnDefinition = "TEXT"
     )
     @Size(min = 2, message = "min title length should be 2")
-    String title;
+    private String title;
 
     @Size(min = 2, message = "min author length should be 2")
-    @Column( name="author",
+    @Column(name = "author",
             nullable = false)
-    String author;
+    private String author;
 
-    @Column( name="price",
+    @Column(name = "price",
             nullable = false)
-    @DecimalMin(value = "0.1",message = "Price should have a value.")
-    double price;
+    @DecimalMin(value = "0.1", message = "Price should have a value.")
+    private double price;
 
-    @Column( name="stars")
-    Long stars;
+    @Column(name = "stars")
+    private Long stars;
 
     @ManyToOne
     @JoinColumn(
-            name="user_id",
+            name = "user_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name="user_id_fk")
+            foreignKey = @ForeignKey(name = "user_id_fk")
 
     )
     @JsonBackReference
     private Student student;
-
-
 
 
     @Override

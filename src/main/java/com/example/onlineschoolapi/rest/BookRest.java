@@ -1,5 +1,6 @@
 package com.example.onlineschoolapi.rest;
 
+import com.example.onlineschoolapi.dto.CreateBookRequest;
 import com.example.onlineschoolapi.model.Book;
 import com.example.onlineschoolapi.services.BookService;
 import org.springframework.http.HttpStatus;
@@ -50,15 +51,6 @@ public class BookRest {
         return new ResponseEntity<>(bookList.get(),HttpStatus.OK);
     }
 
-//    @PostMapping("/addBook")
-//    public ResponseEntity<Book> addBookToAStudent(@RequestBody Book book){
-////        try {
-////            bookService.addBook(book);
-////        }catch (BookAlreadyExist b){
-////            b
-////        }
-//
-//    }
 
 
 }

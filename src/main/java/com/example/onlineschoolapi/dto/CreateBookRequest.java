@@ -16,16 +16,14 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CreateBookRequest {
     @NotNull
-    private Long idBook;
-    @NotNull
     private Long idStudent;
     @NotEmpty
     @Size(min = 3, message = "The book has to have minim 3 characters")
     private String title;
     @Size(min = 2, message = "min author length should be 2")
-    String author;
+    private String author;
     @DecimalMin(value = "0.1", message = "Price should have a value.")
-    double price;
+    private double price;
     @NotNull
     private Long stars;
 
