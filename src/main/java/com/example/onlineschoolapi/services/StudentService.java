@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+
 @Service
 public class StudentService {
 
@@ -94,7 +95,44 @@ public class StudentService {
 
     @Transactional
     @Modifying
-    public void removeBook(CreateBookResponse createBookResponse) throws BookDosentExist{
+    public void removeEnrolment(EnrollRequestStudentToCourse enrollRequestStudentToCourse) throws StatusCourse, StudentDosentExist {
+        Optional<Student> student = studentRepo.findById(enrollRequestStudentToCourse.getIdStudent());
+        if (student.isEmpty()) {
+            throw new StudentDosentExist("Studentul nu exista ! ");
+        }
+
+        Optional<Course> course = courseRepo.findById(enrollRequestStudentToCourse.getIdCourse());
+        if (course.isEmpty()) {
+            throw new StatusCourse("Cursul nu exista !");
+        }
+
+
+        if (!student.get().vfExistCourse(course.get())) {
+            throw new StatusCourse("Enrolmentul nu exista ! ");
+        } else {
+            student.get().removeCourse(course.get());
+            studentRepo.saveAndFlush(student.get());
+        }
+    }
+
+    @Transactional
+    @Modifying
+    public void removeBook(CreateBookRequest createBookRequest) throws BookDosentExist,StudentDosentExist{
+           Optional<Student > student=studentRepo.findById(createBookRequest.getIdStudent());
+
+           if(student.isEmpty()){
+               throw new StudentDosentExist("Studentul nu exista !");
+           }
+
+          List<Book> books=student.get().getBooks();
+
+    }
+    
+    @Transactional
+    @Modifying
+    public Course bestCourse() throws StatusCourse{
+        Optional<Course> curs =courseRepo.findById(studentRepo.bestCourseId().get());
+         return curs.get();
     }
 
 }

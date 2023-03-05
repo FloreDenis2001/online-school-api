@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 public class CreateBookRequest {
     @NotNull
     private Long idStudent;
+
     @NotEmpty
     @Size(min = 3, message = "The book has to have minim 3 characters")
     private String title;

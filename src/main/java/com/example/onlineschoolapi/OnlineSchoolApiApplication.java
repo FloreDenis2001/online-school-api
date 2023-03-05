@@ -85,8 +85,7 @@ public class OnlineSchoolApiApplication {
 //
 //
 //
-
-
+            System.out.println(studentRepo.bestCourseId().get());
 
 
         };

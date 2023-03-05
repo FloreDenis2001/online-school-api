@@ -96,4 +96,13 @@ public class Student {
         return this.books.contains(book);
     }
 
+    public boolean vfExistCourse(Course course){
+        for (Course x : enrolledCourses){
+                if(x.getId()==course.getId()){
+                  return true;
+            }
+        }
+        return false;
+    }
+
 }
