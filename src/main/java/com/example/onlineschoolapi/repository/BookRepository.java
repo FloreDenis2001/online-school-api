@@ -33,8 +33,9 @@ public interface BookRepository extends JpaRepository<Book,Long> {
     @Query("select b from Book b where b.student.id=?1 and b.title=?2")
     Optional<Book> getBookByStudentAndTitle(Long studentId,String title);
 
-    @Query("delete from Book b where b.id=?1")
-    void removeBookById(Long idBook);
+    @Query("delete from Book b where b.student.id=?1  and b.title=?2")
+    void removeBookByStudentAndTitle(Long idStudent,String titleBook);
+
 
 
 
