@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @Service
 public class StudentService {
 
@@ -117,22 +116,25 @@ public class StudentService {
 
     @Transactional
     @Modifying
-    public void removeBook(CreateBookRequest createBookRequest) throws BookDosentExist,StudentDosentExist{
-           Optional<Student > student=studentRepo.findById(createBookRequest.getIdStudent());
+    public void removeBook(CreateBookRequest createBookRequest) throws BookDosentExist, StudentDosentExist {
+        Optional<Student> student = studentRepo.findById(createBookRequest.getIdStudent());
 
-           if(student.isEmpty()){
-               throw new StudentDosentExist("Studentul nu exista !");
-           }
+        if (student.isEmpty())
+            throw new StudentDosentExist("Studentul nu exista !");
 
-          List<Book> books=student.get().getBooks();
+        Optional<Book> book = bookRepository.getBookByStudentAndTitle(createBookRequest.getIdStudent(), createBookRequest.getTitle());
+        if (book.isEmpty())
+            throw new BookDosentExist("Cartea nu exista !");
 
+        bookRepository.removeBookByStudentAndTitle(createBookRequest.getIdStudent(), createBookRequest.getTitle());
+        studentRepo.saveAndFlush(student.get());
     }
-    
+
     @Transactional
     @Modifying
-    public Course bestCourse() throws StatusCourse{
-        Optional<Course> curs =courseRepo.findById(studentRepo.bestCourseId().get());
-         return curs.get();
+    public Course bestCourse() throws StatusCourse {
+        Optional<Course> curs = courseRepo.findById(studentRepo.bestCourseId().get());
+        return curs.get();
     }
 
 }

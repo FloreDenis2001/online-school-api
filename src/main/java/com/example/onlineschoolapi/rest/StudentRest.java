@@ -51,6 +51,12 @@ public class StudentRest {
         Course course = studentService.bestCourse();
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
+
+    @DeleteMapping("/cancelBook")
+    public ResponseEntity<CreateBookRequest> cancelBookToAStudent(@RequestBody CreateBookRequest createBookRequest){
+        studentService.removeBook(createBookRequest);
+        return new ResponseEntity<>(createBookRequest,HttpStatus.OK);
+    }
 }
 
 
