@@ -50,14 +50,14 @@ class StudentRepoTest {
         List<Course> courses = new ArrayList<>();
 
 
-        //todo:populam cu studenti
+   
         for (int i = 0; i < 4; i++) {
             students.add(new Student().builder().age(18 + i).email("denis" + i + "@yahoo.com").firstName("Flore" + i).secondName("Denis" + i).build());
         }
         studentRepo.saveAllAndFlush(students);
 
 
-        //todo:populam cu cursuri
+
         for (int i = 0; i < 4; i++) {
             courses.add(new Course().builder().id(i + 1L).name("Name" + i).department("Depart" + i).build());
         }
