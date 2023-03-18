@@ -61,8 +61,11 @@ public class Book {
     private Student student;
 
 
-
-
+    @Override
+    public boolean equals(Object o) {
+        Book x = (Book) o;
+        return x.getTitle().compareTo(this.getTitle()) == 0 && x.getAuthor().compareTo(this.getAuthor()) == 0;
+    }
 
     @Override
     public String toString() {

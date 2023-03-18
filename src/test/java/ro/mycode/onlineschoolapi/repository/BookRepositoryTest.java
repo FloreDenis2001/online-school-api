@@ -26,20 +26,6 @@ class BookRepositoryTest {
     @Autowired
     StudentRepo studentRepo;
 
-    //todo functie pentru popularea bazei de data
-//    public void pushAndfetch(){
-//        Faker faker = new Faker();
-//        List<Book> books = new ArrayList<>();
-//        Student x = new Student().builder().id(1L).age(18).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
-//        studentRepo.saveAndFlush(x);
-//
-//
-//        for (int i = 0; i < 3; i++) {
-//            books.add(new Book().builder().author(faker.book().author()).price(20 - i).stars(faker.number().numberBetween(1L, 5L)).title(faker.book().title()).build());
-//        }
-//        bookRepository.saveAllAndFlush(books);
-//    }
-
 
     @BeforeEach
     public void deleteDataBase() {
@@ -188,6 +174,7 @@ class BookRepositoryTest {
 
     @Test
     void getBookByStudentAndTitle() {
+
         Faker faker = new Faker();
         List<Book> books = new ArrayList<>();
         Student x = new Student().builder().id(1L).age(18).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
@@ -205,12 +192,34 @@ class BookRepositoryTest {
         find.get().addBook(booksAll.get(0));
         find.get().addBook(booksAll.get(1));
         find.get().addBook(booksAll.get(2));
-        Optional<Book> book = bookRepository.getBookByStudentAndTitle(find.get().getId(), booksAll.get(0).getTitle());
-        assertEquals(books.get(0), bookRepository.getBookByStudentAndTitle(find.get().getId(), booksAll.get(0).getTitle()));
+        studentRepo.saveAndFlush(find.get());
+        assertEquals(booksAll.get(0), bookRepository.getBookByStudentAndTitle(find.get().getId(), booksAll.get(0).getTitle()).get());
 
     }
 
-    @Test
-    void removeBookByStudentAndTitle() {
-    }
+//    @Test
+//    void removeBookByStudentAndTitle() {
+//
+//        Faker faker = new Faker();
+//        List<Book> books = new ArrayList<>();
+//        Student x = new Student().builder().id(1L).age(18).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
+//        studentRepo.saveAndFlush(x);
+//
+//
+//        for (int i = 0; i < 3; i++) {
+//            books.add(new Book().builder().author(faker.book().author()).price(20 - i).stars(5L).title(faker.book().title()).build());
+//        }
+//        bookRepository.saveAllAndFlush(books);
+//
+//
+//        Optional<Student> find = studentRepo.findStudentsByEmail("denis@yahoo.com");
+//        List<Book> booksAll = bookRepository.findAll();
+//        find.get().addBook(booksAll.get(0));
+//        find.get().addBook(booksAll.get(1));
+//        find.get().addBook(booksAll.get(2));
+//        bookRepository.removeBookByStudentAndTitle(find.get().getId(), booksAll.get(0).getTitle());
+//        studentRepo.saveAndFlush(find.get());
+//        assertEquals(Optional.empty(), bookRepository.getBookByStudentAndTitle(find.get().getId(), booksAll.get(0).getTitle()).get());
+//
+//    }
 }
