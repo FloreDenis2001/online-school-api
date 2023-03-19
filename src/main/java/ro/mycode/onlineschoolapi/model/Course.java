@@ -49,6 +49,12 @@ public class Course {
     List<Student> students = new ArrayList<>();
 
     @Override
+    public boolean equals(Object o){
+        Course course=(Course)o;
+        return course.getName().compareTo(this.getName())==0 && course.getDepartment().compareTo(this.getDepartment())==0;
+    }
+
+    @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +

@@ -2,10 +2,7 @@ package ro.mycode.onlineschoolapi.services;
 
 import ro.mycode.onlineschoolapi.dto.CreateBookRequest;
 import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
-import ro.mycode.onlineschoolapi.exception.BookDosentExist;
-import ro.mycode.onlineschoolapi.exception.EmptyDataBase;
-import ro.mycode.onlineschoolapi.exception.StatusCourse;
-import ro.mycode.onlineschoolapi.exception.StudentDosentExist;
+import ro.mycode.onlineschoolapi.exception.*;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
 import ro.mycode.onlineschoolapi.model.Student;
@@ -43,6 +40,27 @@ public class StudentService {
         return students;
     }
 
+    @Transactional
+    @Modifying
+    public void addStudent(Student s) {
+        Optional<Student> student = studentRepo.findStudentsByEmail(s.getEmail());
+        if (student.isEmpty()) {
+            studentRepo.save(s);
+        } else {
+            throw new StudentAlreadyExist("Studentul exista deja!");
+        }
+    }
+
+    @Transactional
+    @Modifying
+    public void removeStudent(String email) {
+        Optional<Student> student = studentRepo.findStudentsByEmail(email);
+        if (!student.isEmpty()) {
+            studentRepo.removeByEmail(email);
+        } else {
+            throw new StudentDosentExist("Studentul nu exista!");
+        }
+    }
 
     @Transactional
     @Modifying
@@ -61,7 +79,6 @@ public class StudentService {
                 author(createBookRequestDTO.getAuthor())
                 .price(createBookRequestDTO.getPrice()).stars(createBookRequestDTO.getStars()).build();
 
-        System.out.println(book);
         if (!bookRepository.getBookByStudentAndTitle(student.get().getId(), book.getTitle()).isEmpty()) {
             throw new BookDosentExist("Book doesn't exist!");
         }
@@ -72,31 +89,31 @@ public class StudentService {
 
     @Transactional
     @Modifying
-    public void addCourse(EnrollRequestStudentToCourse enrollRequestStudentToCourse) throws StatusCourse, StudentDosentExist {
-        Course course = courseRepo.findById(enrollRequestStudentToCourse.getIdCourse()).get();
-        if (course == null) {
-            throw new StatusCourse("Cursul nu exista ! ");
+    public void addCourse(EnrollRequestStudentToCourse enrollRequestStudentToCourse) throws StatusCourseException, StudentDosentExist {
+        Optional<Course> course = courseRepo.findById(enrollRequestStudentToCourse.getIdCourse());
+        if (course.isEmpty()) {
+            throw new StatusCourseException("Cursul nu exista ! ");
         }
 
-        Student student = studentRepo.findById(enrollRequestStudentToCourse.getIdStudent()).get();
-        if (student == null) {
+        Optional<Student> student = studentRepo.findById(enrollRequestStudentToCourse.getIdStudent());
+        if (student.isEmpty()) {
             throw new StudentDosentExist("Studentul nu exista ! ");
         }
 
-        List<Course> courses = student.getEnrolledCourses();
-        for (Course x : courses) {
-            if (x.equals(course)) {
-                throw new StatusCourse("Enrolmentul exista deja ! ");
+        List<Course> courses = student.get().getEnrolledCourses();
+        for (Course t : courses) {
+            if (t.equals(course.get())) {
+                throw new StatusCourseException("Enrolmentul exista deja ! ");
             }
         }
 
-        student.addCourse(course);
-        studentRepo.saveAndFlush(student);
+        student.get().addCourse(course.get());
+        studentRepo.saveAndFlush(student.get());
     }
 
     @Transactional
     @Modifying
-    public void removeEnrolment(EnrollRequestStudentToCourse enrollRequestStudentToCourse) throws StatusCourse, StudentDosentExist {
+    public void removeEnrolment(EnrollRequestStudentToCourse enrollRequestStudentToCourse) throws StatusCourseException, StudentDosentExist {
         Optional<Student> student = studentRepo.findById(enrollRequestStudentToCourse.getIdStudent());
         if (student.isEmpty()) {
             throw new StudentDosentExist("Studentul nu exista ! ");
@@ -104,12 +121,12 @@ public class StudentService {
 
         Optional<Course> course = courseRepo.findById(enrollRequestStudentToCourse.getIdCourse());
         if (course.isEmpty()) {
-            throw new StatusCourse("Cursul nu exista !");
+            throw new StatusCourseException("Cursul nu exista !");
         }
 
 
         if (!student.get().vfExistCourse(course.get())) {
-            throw new StatusCourse("Enrolmentul nu exista ! ");
+            throw new StatusCourseException("Enrolmentul nu exista ! ");
         } else {
             student.get().removeCourse(course.get());
             studentRepo.saveAndFlush(student.get());
@@ -124,17 +141,16 @@ public class StudentService {
         if (student.isEmpty())
             throw new StudentDosentExist("Studentul nu exista !");
 
-        Optional<Book> book = bookRepository.getBookByStudentAndTitle(createBookRequest.getIdStudent(), createBookRequest.getTitle());
+        Optional<Book> book = bookRepository.getBookByStudentAndAuthorAndTitle(createBookRequest.getIdStudent(), createBookRequest.getAuthor(),createBookRequest.getTitle());
         if (book.isEmpty())
             throw new BookDosentExist("Cartea nu exista !");
-
         bookRepository.removeBookByStudentAndTitle(createBookRequest.getIdStudent(), createBookRequest.getTitle());
         studentRepo.saveAndFlush(student.get());
     }
 
     @Transactional
     @Modifying
-    public Course bestCourse() throws StatusCourse {
+    public Course bestCourse() throws StatusCourseException {
         Optional<Course> curs = courseRepo.findById(studentRepo.bestCourseId().get());
         return curs.get();
     }
