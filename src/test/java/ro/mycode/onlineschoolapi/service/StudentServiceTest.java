@@ -246,7 +246,7 @@ class StudentServiceTest {
         doReturn(bookopt).when(bookRepository).getBookByStudentAndAuthorAndTitle(createBookRequest.getIdStudent(),createBookRequest.getAuthor(), createBookRequest.getTitle());
         studentService.addBook(createBookRequest);
         studentService.removeBook(createBookRequest);
-        assertEquals(new ArrayList<>(),student.get().getBooks());
+        assertEquals(new ArrayList<>(), student.get().getBooks());
     }
 
     @Test

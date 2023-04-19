@@ -75,13 +75,15 @@ class BookServiceTest {
         assertEquals(3, bookService.getAllBooksGraterPriceThan(20).get().size());
     }
 
-    @Test
-    void getAllBooksGraterPriceThanException(){
-        doReturn(Optional.empty()).when(bookRepository).lowestPriceBook(20);
-        assertThrows(EmptyDataBase.class,()->{
 
+    @Test
+    void getAllBooksGraterPriceThanException() {
+        doReturn(Optional.empty()).when(bookRepository).lowestPriceBook(15);
+        assertThrows(EmptyDataBase.class, () -> {
+            bookService.getAllBooksGraterPriceThan(15);
         });
     }
+
 
     @Test
     void getAllBooksLowestPriceThan() {
