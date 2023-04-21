@@ -101,11 +101,11 @@ public class StudentService {
         }
 
         List<Course> courses = student.get().getEnrolledCourses();
-        for (Course t : courses) {
+        for (Course t : courses)
             if (t.equals(course.get())) {
                 throw new StatusCourseException("Enrolmentul exista deja ! ");
             }
-        }
+
 
         student.get().addCourse(course.get());
         studentRepo.saveAndFlush(student.get());

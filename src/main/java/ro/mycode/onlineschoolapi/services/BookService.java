@@ -18,7 +18,8 @@ public class BookService {
     }
 
     public List<Book> getAllBooks(){
-        List<Book> bookList=bookRepository.findAll();
+        List<Book> bookList=bookRepository.findAll()
+                ;
 
         if(bookList.size()==0){
             throw new EmptyDataBase("Baza de date este goala !");
@@ -29,6 +30,7 @@ public class BookService {
 
     public Optional<List<Book>> getAllBooksGraterPriceThan(double priceMin){
         Optional<List<Book>> bookList=bookRepository.lowestPriceBook(priceMin);
+
         if(bookList.isEmpty()){
             throw new EmptyDataBase("Baza de date este goala!");
         }
