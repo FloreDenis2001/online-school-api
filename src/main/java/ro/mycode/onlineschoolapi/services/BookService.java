@@ -29,6 +29,7 @@ public class BookService {
 
     public Optional<List<Book>> getAllBooksGraterPriceThan(double priceMin){
         Optional<List<Book>> bookList=bookRepository.lowestPriceBook(priceMin);
+
         if(bookList.isEmpty()){
             throw new EmptyDataBase("Baza de date este goala!");
         }

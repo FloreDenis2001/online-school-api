@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("ap1/v1/books")
+@CrossOrigin
 public class BookRest {
 
     private BookService bookService;

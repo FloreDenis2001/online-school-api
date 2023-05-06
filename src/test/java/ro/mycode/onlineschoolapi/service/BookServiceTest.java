@@ -3,6 +3,8 @@ package ro.mycode.onlineschoolapi.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,6 +37,7 @@ class BookServiceTest {
 
     @InjectMocks
     private BookService bookService;
+
 
     @BeforeEach
     public void test() {
@@ -97,6 +100,15 @@ class BookServiceTest {
     }
 
     @Test
+    void getAllBooksLowestPriceThanException() {
+        doReturn(Optional.empty()).when(bookRepository).highPriceBook(15);
+        assertThrows(EmptyDataBase.class, () -> {
+            bookService.getAllBooksLowestPriceThan(15);
+        });
+    }
+
+
+    @Test
     void getAllBestBooks() {
         List<Book> books = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -108,6 +120,14 @@ class BookServiceTest {
     }
 
     @Test
+    void getAllBestBooksException() {
+        doReturn(Optional.empty()).when(bookRepository).bestBooks();
+        assertThrows(EmptyDataBase.class, () -> {
+            bookService.getAllBestBooks();
+        });
+    }
+
+    @Test
     void getAllBooksByStars() {
         List<Book> books = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -116,5 +136,13 @@ class BookServiceTest {
 
         doReturn(Optional.of(books)).when(bookRepository).filterStarBook(5L);
         assertEquals(5, bookService.getAllBooksByStars(5L).get().size());
+    }
+
+    @Test
+    void getAllBooksByStarsException() {
+        doReturn(Optional.empty()).when(bookRepository).filterStarBook(5L);
+        assertThrows(EmptyDataBase.class, () -> {
+            bookService.getAllBooksByStars(5L);
+        });
     }
 }
