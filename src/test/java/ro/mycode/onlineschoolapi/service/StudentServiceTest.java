@@ -254,11 +254,11 @@ class StudentServiceTest {
         assertEquals("IT",studentService.bestCourse().getDepartment());
     }
 
-//todo rest remove api !
+
 
 
 //    @Test
-//    void removeBook() {
+// void removeBook() {
 //        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
 //        Optional<Student> student = Optional.of(s);
 //        studentService.addStudent(s);
