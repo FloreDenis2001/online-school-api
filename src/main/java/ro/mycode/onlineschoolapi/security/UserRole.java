@@ -13,13 +13,13 @@ import static ro.mycode.onlineschoolapi.security.UserPermission.*;
 
 @AllArgsConstructor
 public enum UserRole {
-    STUDENT(Sets.newHashSet(BOOK_READ, BOOK_WRITE)),
-    ADMIN(Sets.newHashSet(BOOK_READ, BOOK_WRITE,COURSE_READ,COURSE_WRITE));
+    STUDENT(Sets.newHashSet(BOOK_READ,BOOK_WRITE)),
+    ADMIN(Sets.newHashSet(BOOK_READ,BOOK_WRITE,COURSE_READ,COURSE_WRITE));
 
     private final Set<UserPermission> permissions;
     public Set<UserPermission> getPermissions(){return  permissions;}
 
-    public Set<SimpleGrantedAuthority> getGrantedAuthrities(){
+    public Set<SimpleGrantedAuthority> getGrantedAuthorities(){
         Set<SimpleGrantedAuthority> collect=getPermissions()
                 .stream()
                 .map(e->new SimpleGrantedAuthority(e.getPermission()))

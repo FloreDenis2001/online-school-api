@@ -17,6 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static ro.mycode.onlineschoolapi.constante.Utils.JWT_TOKEN_HEADER;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/v1/students")
 public class StudentRest {
 
@@ -33,11 +34,12 @@ public class StudentRest {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody StudentDTO user) {
-        authenticate(user.email(), user.password());
+        authenticate(user.email(),user.password());
         Student loginUser = studentService.findStudentByEmail(user.email());
         Student userPrincipal = new Student(loginUser.getFirstName(), loginUser.getSecondName(),loginUser.getEmail(), loginUser.getAge(),loginUser.getPassword());
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-        LoginResponse loginResponse= new LoginResponse(userPrincipal.getId(),user.email(),jwtHeader.getFirst(JWT_TOKEN_HEADER));
+        Long userId= this.studentService.findStudentByEmail(user.email()).getId();
+        LoginResponse loginResponse= new LoginResponse(userId,user.email(),jwtHeader.getFirst(JWT_TOKEN_HEADER));
         return new ResponseEntity<>(loginResponse, jwtHeader, OK);
     }
 
@@ -84,7 +86,7 @@ public class StudentRest {
 
     private HttpHeaders getJwtHeader(Student user) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(JWT_TOKEN_HEADER, jwtTokenProvider.generateJWTToken((UserDetails) user));
+        headers.add(JWT_TOKEN_HEADER, jwtTokenProvider.generateJWTToken(user));
         return headers;
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import ro.mycode.onlineschoolapi.model.Student;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
 
+@Component
 public class UserDetailsImpl implements UserDetailsService {
     private StudentRepo studentRepo;
 
@@ -19,7 +20,7 @@ public class UserDetailsImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Student user=studentRepo.findStudentsByEmail(s).get();
         if(user!=null){
-            return (UserDetails) user;
+            return user;
         }
 
         throw new UsernameNotFoundException(
