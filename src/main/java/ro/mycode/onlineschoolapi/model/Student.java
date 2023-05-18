@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import javax.persistence.*;
@@ -50,6 +51,9 @@ public class Student {
     @Column(name = "age",
             nullable = false)
     double age;
+    @Column(name = "password",
+            nullable = false)
+    String password;
 
 
     @OneToMany(
@@ -66,6 +70,14 @@ public class Student {
     public void addBook(Book book) {
         this.books.add(book);
         book.setStudent(this);
+    }
+
+    public Student(String firstName, String secondName, String email, double age, String password) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.email = email;
+        this.age = age;
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     @JsonManagedReference

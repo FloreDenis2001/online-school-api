@@ -155,4 +155,8 @@ public class StudentService {
         return curs.get();
     }
 
+    public Student findStudentByEmail(String email){
+        return studentRepo.findStudentsByEmail(email).get();
+    }
+
 }
