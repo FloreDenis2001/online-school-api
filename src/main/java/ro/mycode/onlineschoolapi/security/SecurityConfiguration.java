@@ -9,13 +9,15 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ro.mycode.onlineschoolapi.jwt.JwtAccessDeniedHandler;
 import ro.mycode.onlineschoolapi.jwt.JwtAuthenticationEntryPoint;
 import ro.mycode.onlineschoolapi.jwt.JwtAuthorizationFilter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+
 
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
