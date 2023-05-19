@@ -21,7 +21,7 @@ public class BookRest {
         this.bookService = bookService;
     }
 
-    @GetMapping("/test")
+    @GetMapping("/all")
     public ResponseEntity<List<Book>> bookList(){
         List<Book> bookList=bookService.getAllBooks();
         return new ResponseEntity<>(bookList, HttpStatus.OK);
