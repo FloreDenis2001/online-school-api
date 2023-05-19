@@ -2,6 +2,7 @@ package ro.mycode.onlineschoolapi.services;
 
 import ro.mycode.onlineschoolapi.dto.CreateBookRequest;
 import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
+import ro.mycode.onlineschoolapi.dto.StudentDTO;
 import ro.mycode.onlineschoolapi.exception.*;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
@@ -42,10 +43,11 @@ public class StudentService {
 
     @Transactional
     @Modifying
-    public void addStudent(Student s) {
-        Optional<Student> student = studentRepo.findStudentsByEmail(s.getEmail());
+    public void addStudent(StudentDTO s) {
+        Optional<Student> student = studentRepo.findStudentsByEmail(s.email());
         if (student.isEmpty()) {
-            studentRepo.save(s);
+            Student stud=new Student(s.firstName(),s.secondName(), s.email(), s.age(), s.password());
+            studentRepo.saveAndFlush(stud);
         } else {
             throw new StudentAlreadyExist("Studentul exista deja!");
         }

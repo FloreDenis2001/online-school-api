@@ -2,6 +2,7 @@ package ro.mycode.onlineschoolapi.rest;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +42,18 @@ public class StudentRest {
         return new ResponseEntity<>(loginResponse, jwtHeader, OK);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<RegisterResponse> addStudent(@RequestBody StudentDTO user){
+        this.studentService.addStudent(user);
+        Student loginUser=studentService.findStudentByEmail(user.email());
+        Student studentPrincipal=new Student(user.firstName(), user.secondName(), user.email(), user.age(), user.password());
+        HttpHeaders jwtHeader=getJwtHeader(studentPrincipal);
+        Long userId=this.studentService.findStudentByEmail(user.email()).getId();
+        RegisterResponse registerResponse=new RegisterResponse(userId, user.firstName(), user.secondName(), user.email(),user.age(),jwtHeader.getFirst(JWT_TOKEN_HEADER));
+        authenticate(user.email(), user.password());
+        return new ResponseEntity<>(registerResponse,jwtHeader,OK);
+    }
+
     @GetMapping("/")
     public ResponseEntity<StudentListResponse> studentList() {
         StudentListResponse studentListResponse = StudentListResponse.builder().studentList(studentService.getAllStudents()).message("All students").build();
@@ -48,6 +61,7 @@ public class StudentRest {
     }
 
     @PostMapping("/addBook")
+    @PreAuthorize("hasAuthority('book:write') and hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<CreateBookRequest> addBookToAStudent(@RequestBody CreateBookRequest createBookRequest) {
         studentService.addBook(createBookRequest);
         return new ResponseEntity<>(createBookRequest, HttpStatus.CREATED);
@@ -61,6 +75,7 @@ public class StudentRest {
     }
 
     @DeleteMapping("/cancelCourse")
+    @PreAuthorize("hasAuthority('course:write')")
     public ResponseEntity<EnrollRequestStudentToCourse> cancelCourseToAStudent(@RequestBody EnrollRequestStudentToCourse enrollRequestStudentToCourse) {
         studentService.removeEnrolment(enrollRequestStudentToCourse);
         return new ResponseEntity<>(enrollRequestStudentToCourse, HttpStatus.OK);
@@ -73,6 +88,7 @@ public class StudentRest {
     }
 
     @DeleteMapping("/cancelBook")
+    @PreAuthorize("hasAuthority('book:write')")
     public ResponseEntity<CreateBookRequest> cancelBookToAStudent(@RequestBody CreateBookRequest createBookRequest){
         studentService.removeBook(createBookRequest);
         return new ResponseEntity<>(createBookRequest,HttpStatus.OK);

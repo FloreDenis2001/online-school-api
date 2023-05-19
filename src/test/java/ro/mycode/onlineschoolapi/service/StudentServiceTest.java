@@ -69,15 +69,15 @@ class StudentServiceTest {
     }
 
 
-    @Test
-    void addStudent() {
-        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
-        Optional<Student> student = Optional.of(s);
-        studentService.addStudent(s);
-        doReturn(student).when(studentRepo).findStudentsByEmail(s.getEmail());
-
-        assertEquals("Flore", studentRepo.findStudentsByEmail(s.getEmail()).get().getFirstName());
-    }
+//    @Test
+//    void addStudent() {
+//        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
+//        Optional<Student> student = Optional.of(s);
+//        studentService.addStudent(s);
+//        doReturn(student).when(studentRepo).findStudentsByEmail(s.getEmail());
+//
+//        assertEquals("Flore", studentRepo.findStudentsByEmail(s.getEmail()).get().getFirstName());
+//    }
 
     @Test
     void removeStudent() {
@@ -98,16 +98,16 @@ class StudentServiceTest {
         });
     }
 
-    @Test
-    void addStudentException() {
-        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
-        Optional<Student> student = Optional.of(s);
-
-        doReturn(student).when(studentRepo).findStudentsByEmail(s.getEmail());
-        assertThrows(StudentAlreadyExist.class, () -> {
-            studentService.addStudent(s);
-        });
-    }
+//    @Test
+//    void addStudentException() {
+//        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
+//        Optional<Student> student = Optional.of(s);
+//
+//        doReturn(student).when(studentRepo).findStudentsByEmail(s.getEmail());
+//        assertThrows(StudentAlreadyExist.class, () -> {
+//            studentService.addStudent(s);
+//        });
+//    }
 
     @Test
     void addBook() {

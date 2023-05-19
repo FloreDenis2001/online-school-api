@@ -1,4 +1,4 @@
 package ro.mycode.onlineschoolapi.dto;
 
-public record RegisterResponse(String email,String first_name,String second_name) {
+public record RegisterResponse(Long studentId,String firstName,String secondName,String email , double age , String token) {
 }

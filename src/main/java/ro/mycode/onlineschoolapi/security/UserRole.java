@@ -13,7 +13,7 @@ import static ro.mycode.onlineschoolapi.security.UserPermission.*;
 
 @AllArgsConstructor
 public enum UserRole {
-    STUDENT(Sets.newHashSet(BOOK_READ,BOOK_WRITE)),
+    STUDENT(Sets.newHashSet(BOOK_READ,BOOK_WRITE,COURSE_READ)),
     ADMIN(Sets.newHashSet(BOOK_READ,BOOK_WRITE,COURSE_READ,COURSE_WRITE));
 
     private final Set<UserPermission> permissions;
