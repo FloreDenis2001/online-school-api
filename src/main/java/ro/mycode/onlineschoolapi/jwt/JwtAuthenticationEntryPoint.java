@@ -18,14 +18,13 @@ import static ro.mycode.onlineschoolapi.constante.Utils.FORBIDDEN_MESSAGE;
 public class JwtAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException arg2) throws IOException {
-        HttpResponse httpResponse=new HttpResponse(new Date(),FORBIDDEN.value(),FORBIDDEN, FORBIDDEN.getReasonPhrase().toUpperCase(),FORBIDDEN_MESSAGE);
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+        HttpResponse httpResponse = new HttpResponse(new Date(),FORBIDDEN.value(), FORBIDDEN, FORBIDDEN.getReasonPhrase().toUpperCase(), FORBIDDEN_MESSAGE);
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(FORBIDDEN.value());
-        OutputStream outputStream=response.getOutputStream();
-        ObjectMapper mapper=new ObjectMapper();
-        mapper.writeValue(outputStream,httpResponse);
+        OutputStream outputStream = response.getOutputStream();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(outputStream, httpResponse);
         outputStream.flush();
-
     }
 }

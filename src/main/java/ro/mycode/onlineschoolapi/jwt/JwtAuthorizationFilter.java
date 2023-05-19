@@ -31,23 +31,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (request.getMethod().equalsIgnoreCase(OPTIONS_HTTP_METHOD)) {
             response.setStatus(OK.value());
         } else {
-            String authorizationHeader =request.getHeader(AUTHORIZATION);
-            if(authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_PREFIX)){
-                filterChain.doFilter(request,response);
+            String authorizationHeader = request.getHeader(AUTHORIZATION);
+            if (authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_PREFIX)) {
+                filterChain.doFilter(request, response);
                 return;
             }
-
-            String token=authorizationHeader.substring(TOKEN_PREFIX.length());
-            String username= jwtTokenProvider.getSubject(token);
-            if(jwtTokenProvider.isTokenValid(username,token) && SecurityContextHolder.getContext().getAuthentication()==null){
-                List<GrantedAuthority> authorities=jwtTokenProvider.getAuthorities(token);
-                Authentication authentication= jwtTokenProvider.getAuthentication(username,authorities,request);
+            String token = authorizationHeader.substring(TOKEN_PREFIX.length());
+            String username = jwtTokenProvider.getSubject(token);
+            if (jwtTokenProvider.isTokenValid(username, token) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                List<GrantedAuthority> authorities = jwtTokenProvider.getAuthorities(token);
+                Authentication authentication = jwtTokenProvider.getAuthentication(username, authorities, request);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }else {
+            } else {
                 SecurityContextHolder.clearContext();
             }
-
-
         }
+        filterChain.doFilter(request, response);
     }
 }

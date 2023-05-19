@@ -1,5 +1,6 @@
 package ro.mycode.onlineschoolapi.rest;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,17 +20,14 @@ import static ro.mycode.onlineschoolapi.constante.Utils.JWT_TOKEN_HEADER;
 @RestController
 @CrossOrigin
 @RequestMapping("api/v1/students")
+@AllArgsConstructor
 public class StudentRest {
 
     private StudentService studentService;
     private AuthenticationManager authenticationManager;
     private JWTTokenProvider jwtTokenProvider;
 
-    public StudentRest(StudentService studentService) {
-        this.studentService = studentService;
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+
 
 
     @PostMapping("/login")
