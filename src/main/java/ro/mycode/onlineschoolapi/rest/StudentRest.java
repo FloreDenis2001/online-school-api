@@ -38,8 +38,8 @@ public class StudentRest {
         Student userPrincipal = new Student(loginUser.getFirstName(), loginUser.getSecondName(),loginUser.getEmail(), loginUser.getAge(),loginUser.getPassword());
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
         Long userId= this.studentService.findStudentByEmail(user.email()).getId();
-        LoginResponse loginResponse= new LoginResponse(userId,user.email(),jwtHeader.getFirst(JWT_TOKEN_HEADER));
-        return new ResponseEntity<>(loginResponse, jwtHeader, OK);
+        LoginResponse loginResponse= new LoginResponse(userId,user.email(),jwtHeader.getFirst(JWT_TOKEN_HEADER), loginUser.getFirstName(), loginUser.getSecondName());
+        return new ResponseEntity<>(loginResponse,jwtHeader,OK);
     }
 
     @PostMapping("/register")
@@ -61,7 +61,7 @@ public class StudentRest {
     }
 
     @PostMapping("/addBook")
-    @PreAuthorize("hasAuthority('book:write') and hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('book:write')")
     public ResponseEntity<CreateBookRequest> addBookToAStudent(@RequestBody CreateBookRequest createBookRequest) {
         studentService.addBook(createBookRequest);
         return new ResponseEntity<>(createBookRequest, HttpStatus.CREATED);
