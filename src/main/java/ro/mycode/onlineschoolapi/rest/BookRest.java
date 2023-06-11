@@ -1,13 +1,17 @@
 package ro.mycode.onlineschoolapi.rest;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ro.mycode.onlineschoolapi.model.Book;
+import ro.mycode.onlineschoolapi.model.Course;
 import ro.mycode.onlineschoolapi.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +60,19 @@ public class BookRest {
         return new ResponseEntity<>(bookList.get(),HttpStatus.OK);
     }
 
+
+    @GetMapping("/mybooks")
+    @PreAuthorize("hasAuthority('book:read') and hasAnyRole('ROLE_STUDENT')")
+    public ResponseEntity<List<Book>> bookListByStudent(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username="";
+        List<Book> bookList=new ArrayList<>();
+        if (authentication != null && authentication.isAuthenticated()) {
+            username =(String)authentication.getPrincipal();
+            bookList=bookService.getAllBooksByStudentEmail(username);
+        }
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
 
 
 }

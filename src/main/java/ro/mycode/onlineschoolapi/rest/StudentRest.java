@@ -5,6 +5,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import ro.mycode.onlineschoolapi.dto.*;
 import ro.mycode.onlineschoolapi.jwt.JWTTokenProvider;
@@ -27,6 +29,7 @@ public class StudentRest {
     private StudentService studentService;
     private AuthenticationManager authenticationManager;
     private JWTTokenProvider jwtTokenProvider;
+
 
 
 
