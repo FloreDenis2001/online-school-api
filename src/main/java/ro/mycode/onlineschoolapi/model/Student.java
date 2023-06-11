@@ -68,13 +68,24 @@ public class Student implements UserDetails {
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
-            @Builder.Default
+    @Builder.Default
     List<Book> books = new ArrayList<>();
-
-
     public void addBook(Book book) {
         this.books.add(book);
         book.setStudent(this);
+    }
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL
+
+    )
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @Builder.Default
+    List<Image> images = new ArrayList<>();
+    public void addImage(Image image) {
+        this.images.add(image);
+        image.setStudent(this);
     }
 
     public Student(String firstName, String secondName, String email, double age, String password) {
