@@ -3,6 +3,8 @@ package ro.mycode.onlineschoolapi.rest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import ro.mycode.onlineschoolapi.dto.BookDTO;
+import ro.mycode.onlineschoolapi.dto.CreateBookRequest;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
 import ro.mycode.onlineschoolapi.services.BookService;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,6 +76,19 @@ public class BookRest {
         }
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
+    @PutMapping("/update")
+    @PreAuthorize("hasAuthority('book:write')")
+    public ResponseEntity<BookDTO> updateCar(@RequestBody BookDTO book) {
+        this.bookService.updateBook(book);
+        return new ResponseEntity<>(book,HttpStatus.OK);
+    }
 
+    @DeleteMapping("/removebyid/{id}")
+    @PreAuthorize("hasAuthority('book:write')")
+    public ResponseEntity<Book> deleteBook(@PathVariable(value="id")Long id) {
+       Optional<Book> x = bookService.findById(id);
+        this.bookService.removeById(id);
+        return new ResponseEntity<>(x.get(),HttpStatus.OK);
+    }
 
 }
