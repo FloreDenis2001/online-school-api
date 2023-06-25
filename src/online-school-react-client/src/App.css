@@ -1,0 +1,405 @@
+body {
+	margin: 0px;
+}
+
+
+* {
+	margin: 0;
+	padding: 0;
+}
+.main-login {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: #f1f1f1;
+}
+
+  .signup form{
+	 min-height: 600px;
+	 align-items: center;
+  }
+  .sing-up{
+	margin-left: 50px;
+  }
+  .login {
+	background-color: #fff;
+	padding: 40px;
+	border-radius: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	width: 600px;
+	height: 500px;
+	max-width: 90%;
+  }
+  
+  form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	min-height: 400px;
+  }
+  
+  label {
+	font-weight: bold;
+	margin-bottom: 10px;
+	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	font-size: 2.5em;
+	color: #555;
+  }
+  
+  input {
+	padding: 12px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	width: 350px;
+	font-size: 16px;
+  }
+  
+  button {
+	padding: 12px 20px;
+	background-color: #4caf50;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 50px;
+	width: 150px;
+	font-size: 16px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+  }
+  
+  button:hover {
+	background-color: #45a049;
+  }
+  
+
+  
+  .sign-in{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+  }
+
+  .sign-in span{
+	padding: 0px;
+	margin: 0px;
+  }
+
+span:HOVER{
+	color: #4caf50;
+}
+  
+header {
+	margin: 0;
+	padding: 1px;
+	width: 100%;
+	height: 100px;
+	background-color: rgb(27, 27, 27);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.nav-container{
+	margin-left: 50px;
+}
+
+.course{
+	text-align: center;
+}
+.logo-container {
+	color: whitesmoke;
+	font-family: 'Jost', sans-serif;
+	font-weight: 600;
+	font-size: 2em;
+}
+
+.logo-container p span {
+	font-size: 1em;
+	color: rgb(0, 252, 96);
+}
+
+.logo-container p {
+	padding: 0px;
+	margin: 0px;
+}
+
+.nav-bar ul {
+	display: flex;
+	flex-direction: row;
+	margin-left: 0;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+
+
+.nav-bar ul li {
+	list-style: none;
+	margin-right: 25px;
+}
+
+
+.nav-bar ul li a {
+	text-decoration: none;
+	color: whitesmoke;
+	font-family: 'Jost', sans-serif;
+	font-weight: 700;
+	margin-right: 15px;
+	font-size: 1.2em;
+}
+
+.auth-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+}
+
+.sign-in {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	width: 150px;
+	color: white;
+	font-family: 'Jost', sans-serif;
+	font-weight: 700;
+	font-size: 1.2em;
+	margin-right: 20px;
+}
+
+.nav-bar ul li a:hover {
+	color: rgb(0, 252, 96);
+}
+
+.auth-container a:hover {
+	color: rgb(0, 252, 96);
+}
+
+.sign-in i {
+	color: rgb(0, 252, 96);
+}
+
+.sign-in a {
+	text-decoration: none;
+	color: white;
+	width: 150px;
+	margin-left: 10px;
+}
+
+.go {
+	width: 150px;
+	border: 2px solid rgb(0, 252, 96);
+	height: 40px;
+	background-color: rgb(31, 31, 31);
+	border-radius: 20px;
+	color: rgb(0, 252, 96);
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: 1.3em;
+	font-weight: 900;
+}
+
+
+
+
+
+.go:active {
+	background-color: rgb(0, 252, 96);
+	color: rgb(31, 31, 31);
+	transform: scale(90%);
+}
+
+
+
+
+.all-learnings {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 20px 40px;
+	height: auto;
+	justify-content: space-around;
+}
+
+.book,
+.course {
+	margin-bottom: 20px;
+	border-radius: 10px;
+	margin-left: 20px;
+	width: 20%;
+	background-color: rgb(31, 31, 31);
+	height: 450px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: white;
+	box-shadow: 3px 5px 30px #000000;
+	border-bottom: 10px groove rgb(0, 252, 96);
+}
+
+.course {
+	border-bottom: 10px groove rgb(123, 219, 160);
+}
+
+
+footer {
+	padding: 1px;
+	padding-top: 20px;
+	text-align: center;
+	color: rgb(0, 252, 96);
+	background-color: rgb(27, 27, 27);
+
+}
+
+
+.book img,
+.course img {
+	width: 100%;
+	border-radius: 8px 8px 0px 0px;
+	height: 60%;
+	display: flex;
+	flex-direction: column;
+}
+
+.describe,
+.price {
+	margin: 15px;
+	padding: 0;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-weight: 700;
+	font-size: 1.6em;
+
+}
+
+.price {
+	font-size: 1.2em;
+}
+
+.cart {
+	margin-left: 20px;
+	color: rgb(0, 252, 96);
+}
+
+
+main {
+	padding: 1px;
+	padding-bottom: 10px;
+	background-color: rgba(0, 0, 0, 0.945);
+	height: auto;
+	min-height: 90vh;
+}
+
+.setting-icon{
+	color: white;
+	font-size: 1.5em;
+}
+.modal-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.959);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+  }
+  
+  .modal-content {
+	padding: 20px;
+	border-radius: 4px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+  }
+  .modal-content input{
+	margin-top: 20px;
+  }
+  
+  .modal-buttons {
+	margin-top: 20px;
+	align-items: center;
+  }
+  
+  .save-button {
+	margin-right: 10px;
+	background-color: #4caf50;
+	color: #fff;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+  }
+  
+  .cancel-button {
+	background-color: #ccc;
+	color: #fff;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+  }
+  
+  .icon-book , .icon-course{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	
+  }
+
+  .icon-book p,.icon-course p{
+	padding-inline: 25px;
+	
+  }
+
+  .profile-img{
+	width: 250px;
+	height: 200px;
+	border-radius: 100%;
+  }
+
+  .profile{
+	background-color: rgba(0, 0, 0, 0.945);
+	height: 90vh;
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	align-items: center;
+	justify-content: center;
+  }
+
+  .avatar{
+	height: 200px;
+    padding-top:20px;
+  }
+
+  .details{
+	color: white;
+	text-align: center;
+  }
+  .modal-content label{
+	color: white;
+	margin: 0px;
+	font-size: 2em;
+  }
+
+  .modal-content h2{
+	color: white;
+	font-size: 3em;
+	margin-bottom: 20px;
+  }
+
+  .question-mark{
+	padding: 50px;
+  }
