@@ -9,10 +9,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import ro.mycode.onlineschoolapi.dto.StudentDTO;
+import ro.mycode.onlineschoolapi.model.Student;
 import ro.mycode.onlineschoolapi.repository.BookRepository;
 import ro.mycode.onlineschoolapi.repository.CourseRepo;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
 import ro.mycode.onlineschoolapi.services.BookService;
+import ro.mycode.onlineschoolapi.services.CourseService;
 import ro.mycode.onlineschoolapi.services.StudentService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,8 +33,13 @@ public class OnlineSchoolApiApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner() {
+    CommandLineRunner commandLineRunner(StudentRepo studentRepo,BookService bookService, StudentService studentService, CourseService courseService) {
         return args -> {
+
+//            StudentDTO student=new StudentDTO("Flore2","Denis","floredenis5@yahoo.com",21,"denispericolpublic");
+//            studentService.addStudent(student);
+//            Student x = studentService.findStudentByEmail(student.email());
+//            studentRepo.saveAndFlush(x);
         };
     }
 

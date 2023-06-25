@@ -41,7 +41,7 @@ public class StudentRest {
         Student userPrincipal = new Student(loginUser.getFirstName(), loginUser.getSecondName(),loginUser.getEmail(), loginUser.getAge(),loginUser.getPassword());
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
         Long userId= this.studentService.findStudentByEmail(user.email()).getId();
-        LoginResponse loginResponse= new LoginResponse(userId,user.email(),jwtHeader.getFirst(JWT_TOKEN_HEADER), loginUser.getFirstName(), loginUser.getSecondName());
+        LoginResponse loginResponse= new LoginResponse(userId,user.email(),jwtHeader.getFirst(JWT_TOKEN_HEADER), loginUser.getFirstName(), loginUser.getSecondName(),loginUser.getUserRole());
         return new ResponseEntity<>(loginResponse,jwtHeader,OK);
     }
 
@@ -90,12 +90,6 @@ public class StudentRest {
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cancelBook")
-    @PreAuthorize("hasAuthority('book:write')")
-    public ResponseEntity<CreateBookRequest> cancelBookToAStudent(@RequestBody CreateBookRequest createBookRequest){
-        studentService.removeBook(createBookRequest);
-        return new ResponseEntity<>(createBookRequest,HttpStatus.OK);
-    }
 
     private void authenticate(String username, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

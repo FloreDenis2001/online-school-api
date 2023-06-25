@@ -60,6 +60,10 @@ public class Student implements UserDetails {
             nullable = false)
     String password;
 
+    @Enumerated
+    @Column(name = "role",
+            nullable = false)
+    UserRole userRole=UserRole.STUDENT;
 
     @OneToMany(
             mappedBy = "student",
@@ -94,6 +98,7 @@ public class Student implements UserDetails {
         this.email = email;
         this.age = age;
         this.password = new BCryptPasswordEncoder().encode(password);
+
     }
 
     @JsonManagedReference
@@ -110,6 +115,7 @@ public class Student implements UserDetails {
     public void removeCourse(Course course){
         enrolledCourses.remove(course);
     }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -118,8 +124,10 @@ public class Student implements UserDetails {
                 ", secondName='" + secondName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", role='" + userRole.toString() + '\'' +
                 '}';
     }
+
 
 
     public boolean vfExistsBook(Book book) {
@@ -137,7 +145,8 @@ public class Student implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       return UserRole.STUDENT.getGrantedAuthorities();
+      return userRole.getGrantedAuthorities();
+
     }
 
     @Override

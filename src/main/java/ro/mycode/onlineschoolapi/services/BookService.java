@@ -1,5 +1,9 @@
 package ro.mycode.onlineschoolapi.services;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
+import ro.mycode.onlineschoolapi.dto.BookDTO;
+import ro.mycode.onlineschoolapi.exception.BookDosentExist;
 import ro.mycode.onlineschoolapi.exception.EmptyDataBase;
 import ro.mycode.onlineschoolapi.exception.StudentDosentExist;
 import ro.mycode.onlineschoolapi.model.Book;
@@ -78,6 +82,48 @@ public class BookService {
         }
 
         return bookList;
+    }
+
+
+    @Transactional
+    @Modifying
+    public void updateBook(BookDTO book) throws BookDosentExist {
+        Optional<Book> exits = bookRepository.findById(book.id());
+        if (!exits.isEmpty()) {
+            if (book.title() != "") {
+                exits.get().setTitle(book.title());
+            }
+            if (book.price()!= 0) {
+                exits.get().setPrice(book.price());
+            }
+
+            bookRepository.saveAndFlush(exits.get());
+        } else {
+            throw new BookDosentExist("Cartea nu exista in database ! ");
+        }
+
+
+    }
+
+    @Transactional
+    public void removeById(Long id) throws BookDosentExist{
+        Optional<Book> exits = bookRepository.findById(id);
+        if (!exits.isEmpty()) {
+            bookRepository.removeById(id);
+        } else {
+            throw new BookDosentExist("Cartea nu exista in database ! ");
+        }
+    }
+
+
+    @Transactional
+    public Optional<Book> findById(Long id) throws BookDosentExist{
+        Optional<Book> exits = bookRepository.findById(id);
+        if (!exits.isEmpty()) {
+            return exits;
+        } else {
+            throw new BookDosentExist("Cartea nu exista in database ! ");
+        }
     }
 
 

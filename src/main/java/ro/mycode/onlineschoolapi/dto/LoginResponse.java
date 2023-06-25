@@ -1,4 +1,6 @@
 package ro.mycode.onlineschoolapi.dto;
 
-public record LoginResponse(Long studentId,String email,String token,String firstName,String lastName) {
+import ro.mycode.onlineschoolapi.security.UserRole;
+
+public record LoginResponse(Long studentId, String email, String token, String firstName, String lastName, UserRole userRole) {
 }
