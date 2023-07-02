@@ -14,6 +14,7 @@ import ro.mycode.onlineschoolapi.model.Student;
 import ro.mycode.onlineschoolapi.repository.BookRepository;
 import ro.mycode.onlineschoolapi.repository.CourseRepo;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
+import ro.mycode.onlineschoolapi.security.UserRole;
 import ro.mycode.onlineschoolapi.services.BookService;
 import ro.mycode.onlineschoolapi.services.CourseService;
 import ro.mycode.onlineschoolapi.services.StudentService;
@@ -36,10 +37,15 @@ public class OnlineSchoolApiApplication {
     CommandLineRunner commandLineRunner(StudentRepo studentRepo,BookService bookService, StudentService studentService, CourseService courseService) {
         return args -> {
 
-//            StudentDTO student=new StudentDTO("Flore2","Denis","floredenis5@yahoo.com",21,"denispericolpublic");
-//            studentService.addStudent(student);
-//            Student x = studentService.findStudentByEmail(student.email());
-//            studentRepo.saveAndFlush(x);
+            Student student=new Student();
+            student.setFirstName("Denis");
+            student.setSecondName("Flore");
+            student.setEmail("flore@yahoo.com");
+            student.setPassword("pericol");
+            student.setAge(23);
+            student.setUserRole(UserRole.ADMIN);
+            System.out.println(student);
+            studentRepo.saveAndFlush(student);
         };
     }
 

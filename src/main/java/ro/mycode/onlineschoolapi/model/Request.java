@@ -1,10 +1,7 @@
 package ro.mycode.onlineschoolapi.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -18,6 +15,7 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Data
 public class Request {
     @Id
     @SequenceGenerator(
@@ -37,5 +35,10 @@ public class Request {
             nullable = false)
     Long courseId;
 
-
+    @Column(name="satus")
+    Boolean status;
+    public Request(Long studentId, Long courseId) {
+        this.studentId = studentId;
+        this.courseId = courseId;
+    }
 }

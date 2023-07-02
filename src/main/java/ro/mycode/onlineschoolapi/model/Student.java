@@ -27,6 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Data
 public class Student implements UserDetails {
 
     @Id
@@ -99,6 +100,10 @@ public class Student implements UserDetails {
         this.age = age;
         this.password = new BCryptPasswordEncoder().encode(password);
 
+    }
+
+    public void setPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     @JsonManagedReference

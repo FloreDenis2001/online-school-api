@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 public enum UserPermission {
     BOOK_READ("book:read"),
     COURSE_READ("course:read"),
-    COURSE_WRITE("coruse:write"),
+    COURSE_WRITE("course:write"),
     BOOK_WRITE("book:write");
 
     private String permission;
