@@ -6,6 +6,7 @@ import { DeleteOutlined, QuestionOutlined, SettingOutlined } from '@ant-design/i
 import LoginContextType from '../models/LoginContextType';
 import { ContextLogin } from '../context/LoginProvider';
 import CourseService from '../services/CourseService';
+import RequestService from '../services/RequestService';
 
 
 interface CourseProps {
@@ -16,6 +17,7 @@ interface CourseProps {
 export const CourseComp: React.FC<CourseProps> = ({ course }) => {
     const { studentLogin } = useContext(ContextLogin) as LoginContextType;
     let courseService = new CourseService();
+    let requestService = new RequestService();
     let [mycourses, setMyCourses] = useState(Array<Course>);
     useEffect(() => {
         allMyCourses();
@@ -32,7 +34,7 @@ export const CourseComp: React.FC<CourseProps> = ({ course }) => {
 
     const handleAskJoined=async ():Promise<void>=>{
         try{
-       
+           await requestService.addRequest(studentLogin.token,{idStudent:studentLogin.studentId,idCourse:course.id});
         }catch(err){
             console.log('Error join book:', err);
         }

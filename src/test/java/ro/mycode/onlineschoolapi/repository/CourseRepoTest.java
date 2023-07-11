@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ro.mycode.onlineschoolapi.OnlineSchoolApiApplication;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
 import ro.mycode.onlineschoolapi.model.Student;
+import ro.mycode.onlineschoolapi.security.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,8 @@ class CourseRepoTest {
     void getCoursesOrderByDepartmentAsc() {
         Faker faker = new Faker();
         List<Course> coureses = new ArrayList<>();
-        Student x = new Student().builder().id(1L).age(18).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
+        Student x = new Student().builder().age(18).email("denis@yahoo.com").firstName("Flore").secondName("Denis").userRole(UserRole.STUDENT).password(new BCryptPasswordEncoder().encode("parola")).build();
+
         studentRepo.saveAndFlush(x);
 
 

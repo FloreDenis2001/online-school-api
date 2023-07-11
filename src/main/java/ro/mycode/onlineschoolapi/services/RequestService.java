@@ -3,6 +3,7 @@ package ro.mycode.onlineschoolapi.services;
 import org.springframework.stereotype.Service;
 import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
 import ro.mycode.onlineschoolapi.dto.RequestDTO;
+import ro.mycode.onlineschoolapi.dto.RequestDTORequest;
 import ro.mycode.onlineschoolapi.dto.StudentDTO;
 import ro.mycode.onlineschoolapi.exception.RequestAlreadyExist;
 import ro.mycode.onlineschoolapi.exception.StatusCourseException;
@@ -14,6 +15,7 @@ import ro.mycode.onlineschoolapi.repository.CourseRepo;
 import ro.mycode.onlineschoolapi.repository.RequestRepository;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +35,22 @@ public class RequestService {
     }
 
 
-    public Optional<List<Request>> getAllRequest() {
+//    public Optional<List<Request>> getAllRequest() {
+//        Optional<List<Request>> listOfRequest = Optional.of(requestRepository.findAll());
+//        return listOfRequest;
+//    }
+//
+
+    public Optional<List<RequestDTORequest>> getAllRequest(){
         Optional<List<Request>> listOfRequest = Optional.of(requestRepository.findAll());
-        return listOfRequest;
+        List<RequestDTORequest> list= new ArrayList<RequestDTORequest>();
+        for(Request x: listOfRequest.get()){
+            Student t= studentRepo.findById(x.getStudentId()).get();
+            Course c = courseRepo.findById(x.getCourseId()).get();
+            list.add(new RequestDTORequest(x.getId(),x.getStudentId(),x.getCourseId(),x.getStatus(),t.getEmail(),c.getName()));
+        }
+
+        return Optional.of(list);
     }
 
     public void addRequest(EnrollRequestStudentToCourse enrollRequestStudentToCourse) {
@@ -57,7 +72,7 @@ public class RequestService {
         }
     }
 
-    public void acceptRequest(RequestDTO requestDTO) {
+    public void acceptRequest(RequestDTORequest requestDTO) {
 
         Optional<Student> student = studentRepo.findById(requestDTO.studentId());
         Optional<Request> request=requestRepository.getRequestByCourseIdAndStudentId(requestDTO.courseId(), requestDTO.studentId());
@@ -75,8 +90,8 @@ public class RequestService {
         }
     }
 
-    public void deniedRequest(EnrollRequestStudentToCourse enrollRequestStudentToCourse) {
-        Optional<Request> request = requestRepository.getRequestByCourseIdAndStudentId(enrollRequestStudentToCourse.getIdCourse(), enrollRequestStudentToCourse.getIdStudent());
+    public void deniedRequest(RequestDTORequest requestDTORequest) {
+        Optional<Request> request = requestRepository.getRequestByCourseIdAndStudentId(requestDTORequest.courseId(), requestDTORequest.studentId());
         if (!request.isEmpty()) {
             request.get().setStatus(false);
             requestRepository.saveAndFlush(request.get());

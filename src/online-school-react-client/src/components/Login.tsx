@@ -18,6 +18,9 @@ type FormData = {
 
 const Login: React.FC = () => {
     let { studentLogin, setStudent } = useContext(ContextLogin) as LoginContextType;
+
+
+
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
     let studentService = new StudentService();
@@ -27,13 +30,11 @@ const Login: React.FC = () => {
     let goSingUp = (): void => {
         navigate("/singup");
     }
-
-
-    useEffect(()=>{
-         if(studentLogin!=undefined){
-            navigate(`/home/:studentLogin.studentId`);
-         }
-    },[]);
+    let handleNavHome = (): void => {
+        if(studentLogin!==undefined && studentLogin!==null){
+        navigate("/home");
+    }
+    }
 
     let onSubmit = async (data: FormData) => {
 
@@ -45,12 +46,13 @@ const Login: React.FC = () => {
                 email: rez['email'],
                 token: rez['token'],
                 firstName: rez['firstName'],
-                lastName: rez['lastName']
+                lastName: rez['lastName'],
+                userRole:rez['userRole']
             } as StudentLogin)
-
-console.log("De ce nu functioneaza ! ");
+          
+            console.log(studentLogin);
            Cookies.set("authentificatedUser",JSON.stringify(studentLogin));
-           
+           handleNavHome();
         } catch (err) {
             let result = (err as Error).message;
 
@@ -73,7 +75,7 @@ console.log("De ce nu functioneaza ! ");
                         <input type="password" {...register('password', { required: true, minLength: 6 })} />
                         {errors.password && <span>Password must be at least 6 characters long</span>}
 
-                        <button type='submit'>Login</button>
+                        <button type="submit" >Login</button>
                         <button onClick={goSingUp}>Sing Up</button>
                     </form>
 

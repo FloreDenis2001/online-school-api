@@ -20,5 +20,6 @@ public class EnrollRequestStudentToCourse {
     @NotNull
     private Long idCourse;
 
+    private Boolean status;
 
 }

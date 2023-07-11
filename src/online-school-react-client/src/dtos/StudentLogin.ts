@@ -3,5 +3,6 @@ export default interface StudentLogin {
     email:string,
     token:string,
     firstName:string,
-    lastName:string
+    lastName:string,
+    userRole:string
  }

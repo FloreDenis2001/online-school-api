@@ -37,15 +37,15 @@ public class OnlineSchoolApiApplication {
     CommandLineRunner commandLineRunner(StudentRepo studentRepo,BookService bookService, StudentService studentService, CourseService courseService) {
         return args -> {
 
-            Student student=new Student();
-            student.setFirstName("Denis");
-            student.setSecondName("Flore");
-            student.setEmail("flore@yahoo.com");
-            student.setPassword("pericol");
-            student.setAge(23);
-            student.setUserRole(UserRole.ADMIN);
-            System.out.println(student);
-            studentRepo.saveAndFlush(student);
+//            Student student=new Student();
+//            student.setFirstName("Denis");
+//            student.setSecondName("Flore");
+//            student.setEmail("denis@yahoo.com");
+//            student.setPassword("pericol2");
+//            student.setAge(21);
+//            student.setUserRole(UserRole.STUDENT);
+//            System.out.println(student);
+//            studentRepo.saveAndFlush(student);
         };
     }
 

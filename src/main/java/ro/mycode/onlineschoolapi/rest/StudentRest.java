@@ -10,12 +10,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import ro.mycode.onlineschoolapi.dto.*;
 import ro.mycode.onlineschoolapi.jwt.JWTTokenProvider;
+import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
 import ro.mycode.onlineschoolapi.model.Student;
 import ro.mycode.onlineschoolapi.services.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
 import static org.springframework.http.HttpStatus.OK;
 
 import static ro.mycode.onlineschoolapi.constante.Utils.JWT_TOKEN_HEADER;
@@ -90,6 +94,11 @@ public class StudentRest {
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
+    @GetMapping("/findbyid/{id}")
+    public ResponseEntity<StudentRequest> findStudentById(@PathVariable(value="id")Long id) {
+        Optional<StudentRequest> x = studentService.getStudentById(id);
+        return new ResponseEntity<>(x.get(),HttpStatus.OK);
+    }
 
     private void authenticate(String username, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

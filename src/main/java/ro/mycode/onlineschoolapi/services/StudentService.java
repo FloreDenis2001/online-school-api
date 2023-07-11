@@ -3,6 +3,7 @@ package ro.mycode.onlineschoolapi.services;
 import ro.mycode.onlineschoolapi.dto.CreateBookRequest;
 import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
 import ro.mycode.onlineschoolapi.dto.StudentDTO;
+import ro.mycode.onlineschoolapi.dto.StudentRequest;
 import ro.mycode.onlineschoolapi.exception.*;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
@@ -41,12 +42,23 @@ public class StudentService {
         return students;
     }
 
+    public Optional<StudentRequest> getStudentById(Long id) {
+        Optional<Student> student = studentRepo.findById(id);
+        if (!student.isEmpty()) {
+            StudentRequest studentRequest = new StudentRequest(student.get().getId(), student.get().getFirstName(), student.get().getSecondName(),
+                    student.get().getEmail(), student.get().getAge(), student.get().getPassword(), student.get().getUserRole());
+            return Optional.of(studentRequest);
+        } else {
+            throw new StudentDosentExist("Studentul nu exista !");
+        }
+    }
+
     @Transactional
     @Modifying
     public void addStudent(StudentDTO s) {
         Optional<Student> student = studentRepo.findStudentsByEmail(s.email());
         if (student.isEmpty()) {
-            Student stud=new Student(s.firstName(),s.secondName(), s.email(), s.age(), s.password());
+            Student stud = new Student(s.firstName(), s.secondName(), s.email(), s.age(), s.password());
             studentRepo.saveAndFlush(stud);
         } else {
             throw new StudentAlreadyExist("Studentul exista deja!");
@@ -143,7 +155,7 @@ public class StudentService {
         if (student.isEmpty())
             throw new StudentDosentExist("Studentul nu exista !");
 
-        Optional<Book> book = bookRepository.getBookByStudentAndAuthorAndTitle(createBookRequest.getIdStudent(), createBookRequest.getAuthor(),createBookRequest.getTitle());
+        Optional<Book> book = bookRepository.getBookByStudentAndAuthorAndTitle(createBookRequest.getIdStudent(), createBookRequest.getAuthor(), createBookRequest.getTitle());
         if (book.isEmpty())
             throw new BookDosentExist("Cartea nu exista !");
         bookRepository.removeBookByStudentAndTitle(createBookRequest.getIdStudent(), createBookRequest.getTitle());
@@ -157,7 +169,7 @@ public class StudentService {
         return curs.get();
     }
 
-    public Student findStudentByEmail(String email){
+    public Student findStudentByEmail(String email) {
         return studentRepo.findStudentsByEmail(email).get();
     }
 

@@ -3,5 +3,6 @@ export default interface Student {
     age:number,
     email:string,
     first_name:string,
-    second_name:string
+    second_name:string,
+    userRole:string
 }

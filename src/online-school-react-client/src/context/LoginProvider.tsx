@@ -18,7 +18,8 @@ const LoginProvider: React.FC<Props> = ({ children }) => {
     email: 'NOEMAIL',
     token: 'INVALIDE',
     firstName: 'NONAME',
-    lastName: 'NONAME'
+    lastName: 'NONAME',
+    userRole:"NOROLE"
   });
 
   useEffect(() => {

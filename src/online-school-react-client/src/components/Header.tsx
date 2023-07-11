@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import React, { useContext, useEffect, useState } from 'react';
+import { LogoutOutlined, UserOutlined, WindowsFilled } from '@ant-design/icons';
 import { ContextLogin } from '../context/LoginProvider';
 import LoginContextType from '../models/LoginContextType';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 const Header: React.FC = () => {
   const { studentLogin, setStudent } = useContext(ContextLogin) as LoginContextType;
   const navigate = useNavigate();
+ let [isAdmin,setAdmin]=useState(false);
 
   const handleNavigation = (event: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     event.preventDefault();
@@ -21,12 +22,24 @@ const Header: React.FC = () => {
     try {
      
       Cookies.remove("authentificatedUser");
-      navigate("/login");
+      navigate("/");
+
     } catch (err) {
       console.log('Error log out : ', err);
     }
-
   }
+
+  
+const handleRole=async ():Promise<void>=>{
+  if(studentLogin.userRole=="ADMIN"){
+        setAdmin(true);
+  }
+}
+
+useEffect(()=>{
+  handleRole();
+},[])
+
 
   return (
     <header>
@@ -38,7 +51,7 @@ const Header: React.FC = () => {
         <nav className="nav-bar">
           <ul>
             <li>
-              <a href="/" onClick={(event) => handleNavigation(event, '/home/:studentId')}>
+              <a href="/" onClick={(event) => handleNavigation(event, '/home')}>
                 Home
               </a>
             </li>
@@ -52,6 +65,13 @@ const Header: React.FC = () => {
                 My Courses
               </a>
             </li>
+            
+          {isAdmin &&
+            <li>
+              <a href="/" onClick={(event) => handleNavigation(event, '/requests')}>
+                Requests
+              </a>
+            </li>}
           </ul>
         </nav>
       </div>

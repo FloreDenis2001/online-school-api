@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ro.mycode.onlineschoolapi.OnlineSchoolApiApplication;
 import ro.mycode.onlineschoolapi.model.Course;
 import ro.mycode.onlineschoolapi.model.Student;
+import ro.mycode.onlineschoolapi.security.UserRole;
 
 import javax.transaction.Transactional;
 import java.sql.Array;
@@ -35,7 +37,7 @@ class StudentRepoTest {
     void findStudentsByEmail() {
         List<Student> students = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            students.add(new Student().builder().age(18 + i).email("denis" + i + "@yahoo.com").firstName("Flore" + i).secondName("Denis" + i).build());
+            students.add(new Student().builder().age(18 + i).email("denis" + i + "@yahoo.com").firstName("Flore" + i).secondName("Denis" + i).userRole(UserRole.STUDENT).password(new BCryptPasswordEncoder().encode("parola")).build());
         }
 
         studentRepo.saveAll(students);
@@ -52,7 +54,7 @@ class StudentRepoTest {
 
    
         for (int i = 0; i < 4; i++) {
-            students.add(new Student().builder().age(18 + i).email("denis" + i + "@yahoo.com").firstName("Flore" + i).secondName("Denis" + i).build());
+            students.add(new Student().builder().age(18 + i).email("denis" + i + "@yahoo.com").firstName("Flore" + i).secondName("Denis" + i).userRole(UserRole.STUDENT).password(new BCryptPasswordEncoder().encode("parola")).build());
         }
         studentRepo.saveAllAndFlush(students);
 

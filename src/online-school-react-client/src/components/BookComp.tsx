@@ -45,6 +45,7 @@ export const BookComp: React.FC<BookCompProps> = ({ book }) => {
     const handleDeleteBook=async ():Promise<void>=>{
         try{
         await bookService.deleteBook(studentLogin.token,book);
+        window.location.reload()
         }catch(err){
             console.log('Error deleting book:', err);
         }
