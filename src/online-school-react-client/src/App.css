@@ -442,8 +442,12 @@ main {
 	width: 25rem;
 	height: 20rem;
 	border-radius: 2px;
+	margin-top: 20px;
   }
 
   .all-requests{
 	margin-top: 40px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
   }
