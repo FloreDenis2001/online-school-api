@@ -29,7 +29,6 @@ const handleCloseModal = (): void => {
         <p>Email : {studentLogin.email}</p>
       </div>
       <button className='book-add' onClick={handleAddBook}>Add Book</button>
-      <button className='update-profile'>Update</button>
       {showAddedModal && (
                 <AddBook  handleCloseModal={handleCloseModal} />
       )}

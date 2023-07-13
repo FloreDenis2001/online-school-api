@@ -78,8 +78,8 @@ useEffect(()=>{
 
       <div className="auth-container">
         <div className="sign-in">
-          <UserOutlined />
-          <span onClick={() => (navigate('/profile/:studentId'))}>{studentLogin?.firstName} {studentLogin?.lastName}</span>
+         
+          <span onClick={() => (navigate('/profile/:studentId'))}><UserOutlined />{studentLogin?.firstName} {studentLogin?.lastName}</span>
 
           <LogoutOutlined onClick={(handleLogOut)} />
         </div>

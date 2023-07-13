@@ -49,7 +49,8 @@ const RequestAdmin: React.FC = () => {
         
           { 
             requests.map(request => {
-              return <RequestComp request={request}/>
+              if(request.status===null){
+              return <RequestComp request={request}/>}
             })
           }
         </div>

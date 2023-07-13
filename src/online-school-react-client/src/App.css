@@ -82,11 +82,14 @@ body {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	min-width: 180px;
   }
 
   .sign-in span{
 	padding: 0px;
 	margin: 0px;
+	display: flex;
+	align-items: center;
   }
 
 span:HOVER{
@@ -231,18 +234,28 @@ header {
 
 .book,
 .course {
-	margin-bottom: 20px;
-	border-radius: 10px;
+	margin-bottom: 40px;
+	border-radius: 5px;
 	margin-left: 20px;
 	width: 20%;
 	background-color: rgb(31, 31, 31);
-	height: 450px;
+	min-height: 450px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-around;
 	color: white;
 	box-shadow: 3px 5px 30px #000000;
 	border-bottom: 10px groove rgb(0, 252, 96);
+    transform: skewX(-5deg);
+	transition: all .2s;
+}
+
+
+
+.book p{
+	transform: skewX(5deg);
+	transition: all .2s;
 }
 
 .course {
@@ -263,10 +276,11 @@ footer {
 .book img,
 .course img {
 	width: 100%;
-	border-radius: 8px 8px 0px 0px;
-	height: 60%;
+	border-radius: 4px 4px 0px 0px;
+	height: 250px;
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 20px;
 }
 
 .describe,
@@ -276,7 +290,7 @@ footer {
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 	font-weight: 700;
 	font-size: 1.6em;
-
+    text-align: center;
 }
 
 .price {
@@ -407,14 +421,27 @@ main {
 
   .request p{
 	color: white;
-  }
+	font-size:1.4rem;
+	font-weight: 400;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-top: 20px;
+}
 
+.request button{
+	margin-top: 20px;
+}
 
   .request{
-	background-color: rgb(167, 163, 163);
-	display:inline-block;
+	box-shadow: 0 7px 4px rgba(0, 0, 0, 0.1);
+	background-color: rgb(31, 31, 31);
+    display: flex;
+	flex-direction: column;
+	align-items: center;
 	text-align: center;
 	margin-left: 2rem;
+	width: 25rem;
+	height: 20rem;
+	border-radius: 2px;
   }
 
   .all-requests{

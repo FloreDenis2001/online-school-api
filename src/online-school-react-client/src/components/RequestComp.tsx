@@ -66,7 +66,6 @@ export const RequestComp: React.FC<RequestCompProps> = ({ request }) => {
          <div className={`request id-${request.id}`} key={request.id}>
             <p className='courseId'>Student : {request.studentEmail}</p>
             <p className='studentId'>Course : {request.courseName}</p>
-            <p className='courseStatus'>Status : {request.status}</p> 
             <button onClick={handleAccept}>Accept</button>
             <button onClick={handleDenied}>Denied</button>
          </div>
