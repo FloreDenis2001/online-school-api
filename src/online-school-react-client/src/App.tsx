@@ -22,7 +22,6 @@ function App() {
           <Routes>
           <Route  path='/' element={<Login />} />
             <Route path="/singup" element={<SingUp />} /> 
-            <Route path='/swagger/index.html'/>
             <Route path="" element={<PrivateRoutes />}>
               <Route path="/home" element={<Home/>}/>
               <Route path='/mycourses/:studentId' element={<MyCourses/>}/>

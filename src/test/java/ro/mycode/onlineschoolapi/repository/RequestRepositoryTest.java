@@ -65,5 +65,31 @@ RequestRepository requestRepository;
         assertEquals(true,requestRepository.getRequestByCourseIdAndStudentId(1L,2L).get().getStatus());
     }
 
+    @Test
+    void removeByCourseIdAndStudentIdTest() {
+        Course course = new Course();
+        course.setName("Math");
+        course.setDepartment("Science");
+        courseRepo.saveAndFlush(course);
+
+        Student student = new Student();
+        student.setFirstName("John");
+        student.setSecondName("Doe");
+        student.setEmail("john@example.com");
+        student.setAge(20);
+        student.setPassword("password");
+        student.setUserRole(UserRole.STUDENT);
+        studentRepo.saveAndFlush(student);
+
+        Request request = new Request();
+        request.setCourseId(course.getId());
+        request.setStudentId(student.getId());
+        requestRepository.saveAndFlush(request);
+
+        requestRepository.removeByCourseIdAndStudentId(course.getId(), student.getId());
+
+        assertEquals(null, requestRepository.findById(request.getId()).orElse(null));
+    }
+
 
 }
