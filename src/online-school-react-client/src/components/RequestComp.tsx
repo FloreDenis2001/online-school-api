@@ -37,6 +37,7 @@ export const RequestComp: React.FC<RequestCompProps> = ({ request }) => {
   const handleDenied=async ():Promise<void>=>{
     try{
       let data=  await requestService.deniedRequest(studentLogin.token,request);
+      
       console.log(data);
     }catch(err){
         console.log('Error denied request:', err);

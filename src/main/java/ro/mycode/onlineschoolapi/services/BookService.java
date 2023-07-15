@@ -37,9 +37,9 @@ public class BookService {
     }
 
     public List<Book> getAllBooksByStudentEmail(String email){
-        Student student=studentRepo.findStudentsByEmail(email).get();
-        if(student!=null && student.getBooks()!=null){
-            return student.getBooks();
+       Optional<Student> student=studentRepo.findStudentsByEmail(email);
+        if(!student.isEmpty() && student.get().getBooks()!=null){
+            return student.get().getBooks();
         }else{
             throw new StudentDosentExist("Nu s-au gasit date valabile!");
         }

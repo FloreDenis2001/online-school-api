@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ro.mycode.onlineschoolapi.dto.CreateBookRequest;
 import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
+import ro.mycode.onlineschoolapi.dto.StudentDTO;
 import ro.mycode.onlineschoolapi.exception.*;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
@@ -17,6 +18,7 @@ import ro.mycode.onlineschoolapi.model.Student;
 import ro.mycode.onlineschoolapi.repository.BookRepository;
 import ro.mycode.onlineschoolapi.repository.CourseRepo;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
+import ro.mycode.onlineschoolapi.security.UserRole;
 import ro.mycode.onlineschoolapi.services.StudentService;
 
 import java.util.ArrayList;
@@ -231,6 +233,7 @@ class StudentServiceTest {
             studentService.removeEnrolment(enrollRequestStudentToCourse);
         });
     }
+
     @Test
     void removeEnrolmentException3() {
         EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
@@ -251,31 +254,61 @@ class StudentServiceTest {
         Optional<Long> courseOptional = Optional.of(course.getId());
         doReturn(courseOptional).when(studentRepo).bestCourseId();
         when(courseRepo.findById(studentRepo.bestCourseId().get())).thenReturn(Optional.of(course));
-        assertEquals("IT",studentService.bestCourse().getDepartment());
+        assertEquals("IT", studentService.bestCourse().getDepartment());
+    }
+
+
+    @Test
+    void findStudentByIdTest() {
+        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
+        doReturn(Optional.of(s)).when(studentRepo).findById(1L);
+        assertEquals(21, studentService.getStudentById(1L).get().age());
+    }
+
+    @Test
+    void findStudentByIdTestException() {
+        doReturn(Optional.empty()).when(studentRepo).findById(1L);
+        assertThrows(StudentDosentExist.class, () -> {
+            studentService.getStudentById(1L);
+        });
+    }
+
+    @Test
+    void findStudentByEmailTest() {
+        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
+        doReturn(Optional.of(s)).when(studentRepo).findStudentsByEmail("denis@yahoo.com");
+        assertEquals(21, studentService.findStudentByEmail("denis@yahoo.com").getAge());
+    }
+
+    @Test
+    void findStudentByEmailException() {
+        doReturn(Optional.empty()).when(studentRepo).findStudentsByEmail("denis@yahoo.com");
+        assertThrows(StudentDosentExist.class, () -> {
+            studentService.findStudentByEmail("denis@yahoo.com");
+        });
+    }
+
+    @Test
+    void addStudentTest() {
+        StudentDTO studentDTO = new StudentDTO("Flore", "Denis", "denis@yahoo.com", 21, "parola", UserRole.STUDENT);
+        studentService.addStudent(studentDTO);
+        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
+        doReturn(Optional.of(s)).when(studentRepo).findStudentsByEmail("denis@yahoo.com");
+        assertEquals(21, studentService.findStudentByEmail("denis@yahoo.com").getAge());
     }
 
 
 
+    @Test
+    void addStudentTestException() {
+        StudentDTO studentDTO = new StudentDTO("Flore", "Denis", "denis@yahoo.com", 21, "parola", UserRole.STUDENT);
 
-//    @Test
-// void removeBook() {
-//        Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
-//        Optional<Student> student = Optional.of(s);
-//        studentService.addStudent(s);
-//        CreateBookRequest createBookRequest = new CreateBookRequest().builder().idStudent(1L).stars(5L).title("Harry Potter").price(20).author("Flore Denis").build();
-//        doReturn(student).when(studentRepo).findById(createBookRequest.getIdStudent());
-//        Book book = Book.builder().id(1L).
-//                title(createBookRequest.getTitle()).
-//                author(createBookRequest.getAuthor())
-//                .price(createBookRequest.getPrice()).stars(createBookRequest.getStars()).build();
-//        Optional<Book> bookopt = Optional.of(book);
-//        doReturn(bookopt).when(bookRepository).getBookByStudentAndAuthorAndTitle(createBookRequest.getIdStudent(),createBookRequest.getAuthor(), createBookRequest.getTitle());
-//        doReturn(student).when(studentRepo).findById(createBookRequest.getIdStudent());
-//        studentService.addBook(createBookRequest);
-//        studentService.removeBook(createBookRequest);
-//        assertEquals(new ArrayList<>(), student.get().getBooks());
-//    }
+        doReturn(Optional.of(new Student())).when(studentRepo).findStudentsByEmail("denis@yahoo.com");
 
+        assertThrows(StudentAlreadyExist.class, () -> {
+            studentService.addStudent(studentDTO);
+        });
+    }
 
 
 

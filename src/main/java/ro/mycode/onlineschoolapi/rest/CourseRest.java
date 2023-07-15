@@ -30,14 +30,14 @@ public class CourseRest {
 
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('course:read') and hasAnyRole('ROLE_STUDENT')")
+    @PreAuthorize("hasAuthority('course:read')")
     public ResponseEntity<List<Course>> courseList(){
         List<Course> coursesList=courseService.getAllCourse();
         return new ResponseEntity<>(coursesList, HttpStatus.OK);
     }
 
     @GetMapping("/my/courses")
-    @PreAuthorize("hasAuthority('course:read') and hasAnyRole('ROLE_STUDENT')")
+    @PreAuthorize("hasAuthority('course:read')")
     public ResponseEntity<List<Course>> courseListByStudent(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username="";

@@ -9,51 +9,43 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ro.mycode.onlineschoolapi.OnlineSchoolApiApplication;
 import ro.mycode.onlineschoolapi.model.Course;
+import ro.mycode.onlineschoolapi.model.Request;
 import ro.mycode.onlineschoolapi.model.Student;
 import ro.mycode.onlineschoolapi.security.UserRole;
 
-import javax.transaction.Transactional;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = OnlineSchoolApiApplication.class)
-class StudentRepoTest {
-    @Autowired
-    StudentRepo studentRepo;
-    @Autowired
-    CourseRepo courseRepo;
+class RequestRepositoryTest {
+
+@Autowired
+StudentRepo studentRepo;
+@Autowired
+CourseRepo courseRepo;
+
+@Autowired
+RequestRepository requestRepository;
 
     @BeforeEach
     public void test() {
         studentRepo.deleteAll();
         courseRepo.deleteAll();
+        requestRepository.deleteAll();
     }
 
     @Test
-    void findStudentsByEmail() {
-        List<Student> students = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            students.add(new Student().builder().age(18 + i).email("denis" + i + "@yahoo.com").firstName("Flore" + i).secondName("Denis" + i).userRole(UserRole.STUDENT).password(new BCryptPasswordEncoder().encode("parola")).build());
-        }
-
-        studentRepo.saveAll(students);
-        assertEquals(18, studentRepo.findStudentsByEmail("denis0@yahoo.com").get().getAge());
-
-    }
-
-    @Test
-    @Transactional
-    public void bestCourseId() {
+    void getRequestByStudentIdAndCourseIdTest(){
         List<Student> students = new ArrayList<>();
         List<Course> courses = new ArrayList<>();
 
 
-   
+
         for (int i = 0; i < 4; i++) {
             students.add(new Student().builder().age(18 + i).email("denis" + i + "@yahoo.com").firstName("Flore" + i).secondName("Denis" + i).userRole(UserRole.STUDENT).password(new BCryptPasswordEncoder().encode("parola")).build());
         }
@@ -66,19 +58,12 @@ class StudentRepoTest {
         }
         courseRepo.saveAllAndFlush(courses);
 
+        Optional<Request> requests = Optional.of(new Request().builder().courseId(1L).studentId(2L).status(true).build());
 
-        Optional<Student> x = studentRepo.findStudentsByEmail("denis0@yahoo.com");
+        requestRepository.saveAndFlush(requests.get());
 
-        Optional<Course> course=courseRepo.getAllCoursesByDepartamentAndName("Depart0","Name0");
-
-        x.get().addCourse(course.get());
-
-        studentRepo.saveAndFlush(x.get());
-
-        assertEquals(courses.get(0).getId(),studentRepo.bestCourseId().get());
-
+        assertEquals(true,requestRepository.getRequestByCourseIdAndStudentId(1L,2L).get().getStatus());
     }
-
 
 
 }

@@ -29,7 +29,7 @@ public class BookRest {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('book:read') and hasAnyRole('ROLE_STUDENT')")
+    @PreAuthorize("hasAuthority('book:read')")
     public ResponseEntity<List<Book>> bookList(){
         List<Book> bookList=bookService.getAllBooks();
         return new ResponseEntity<>(bookList, HttpStatus.OK);
@@ -65,7 +65,7 @@ public class BookRest {
 
 
     @GetMapping("/mybooks")
-    @PreAuthorize("hasAuthority('book:read') and hasAnyRole('ROLE_STUDENT')")
+    @PreAuthorize("hasAuthority('book:read')")
     public ResponseEntity<List<Book>> bookListByStudent(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username="";

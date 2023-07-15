@@ -93,14 +93,23 @@ public class Student implements UserDetails {
         image.setStudent(this);
     }
 
+    public Student(String firstName, String secondName, String email, double age, String password,UserRole role) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.email = email;
+        this.age = age;
+        this.password = new BCryptPasswordEncoder().encode(password);
+        this.userRole=role;
+    }
+
     public Student(String firstName, String secondName, String email, double age, String password) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
         this.age = age;
         this.password = new BCryptPasswordEncoder().encode(password);
-
     }
+
 
     public void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);

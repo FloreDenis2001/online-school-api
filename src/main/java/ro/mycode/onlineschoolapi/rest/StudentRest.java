@@ -42,7 +42,7 @@ public class StudentRest {
     public ResponseEntity<LoginResponse> login(@RequestBody StudentDTO user) {
         authenticate(user.email(),user.password());
         Student loginUser = studentService.findStudentByEmail(user.email());
-        Student userPrincipal = new Student(loginUser.getFirstName(), loginUser.getSecondName(),loginUser.getEmail(), loginUser.getAge(),loginUser.getPassword());
+        Student userPrincipal = new Student(loginUser.getFirstName(), loginUser.getSecondName(),loginUser.getEmail(), loginUser.getAge(),loginUser.getPassword(),loginUser.getUserRole());
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
         Long userId= this.studentService.findStudentByEmail(user.email()).getId();
         LoginResponse loginResponse= new LoginResponse(userId,user.email(),jwtHeader.getFirst(JWT_TOKEN_HEADER), loginUser.getFirstName(), loginUser.getSecondName(),loginUser.getUserRole());
@@ -53,7 +53,7 @@ public class StudentRest {
     public ResponseEntity<RegisterResponse> addStudent(@RequestBody StudentDTO user){
         this.studentService.addStudent(user);
         Student loginUser=studentService.findStudentByEmail(user.email());
-        Student studentPrincipal=new Student(user.firstName(), user.secondName(), user.email(), user.age(), user.password());
+        Student studentPrincipal=new Student(user.firstName(), user.secondName(), user.email(), user.age(), user.password(),user.role());
         HttpHeaders jwtHeader=getJwtHeader(studentPrincipal);
         Long userId=this.studentService.findStudentByEmail(user.email()).getId();
         RegisterResponse registerResponse=new RegisterResponse(userId, user.firstName(), user.secondName(), user.email(),user.age(),jwtHeader.getFirst(JWT_TOKEN_HEADER));

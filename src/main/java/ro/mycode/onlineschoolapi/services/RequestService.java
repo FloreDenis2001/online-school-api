@@ -35,15 +35,11 @@ public class RequestService {
     }
 
 
-//    public Optional<List<Request>> getAllRequest() {
-//        Optional<List<Request>> listOfRequest = Optional.of(requestRepository.findAll());
-//        return listOfRequest;
-//    }
-//
+
 
     public Optional<List<RequestDTORequest>> getAllRequest(){
         Optional<List<Request>> listOfRequest = Optional.of(requestRepository.findAll());
-        List<RequestDTORequest> list= new ArrayList<RequestDTORequest>();
+        List<RequestDTORequest> list= new ArrayList<>();
         for(Request x: listOfRequest.get()){
             Student t= studentRepo.findById(x.getStudentId()).get();
             Course c = courseRepo.findById(x.getCourseId()).get();

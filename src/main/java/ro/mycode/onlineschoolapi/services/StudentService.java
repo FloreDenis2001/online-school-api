@@ -147,20 +147,6 @@ public class StudentService {
         }
     }
 
-    @Transactional
-    @Modifying
-    public void removeBook(CreateBookRequest createBookRequest) throws BookDosentExist, StudentDosentExist {
-        Optional<Student> student = studentRepo.findById(createBookRequest.getIdStudent());
-
-        if (student.isEmpty())
-            throw new StudentDosentExist("Studentul nu exista !");
-
-        Optional<Book> book = bookRepository.getBookByStudentAndAuthorAndTitle(createBookRequest.getIdStudent(), createBookRequest.getAuthor(), createBookRequest.getTitle());
-        if (book.isEmpty())
-            throw new BookDosentExist("Cartea nu exista !");
-        bookRepository.removeBookByStudentAndTitle(createBookRequest.getIdStudent(), createBookRequest.getTitle());
-        studentRepo.saveAndFlush(student.get());
-    }
 
     @Transactional
     @Modifying
@@ -170,7 +156,12 @@ public class StudentService {
     }
 
     public Student findStudentByEmail(String email) {
-        return studentRepo.findStudentsByEmail(email).get();
+        Optional<Student> stundet=studentRepo.findStudentsByEmail(email);
+        if(!stundet.isEmpty()){
+            return stundet.get();
+        }else {
+            throw new StudentDosentExist("Studentul nu exista !");
+        }
     }
 
 }

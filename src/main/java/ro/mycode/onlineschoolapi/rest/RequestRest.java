@@ -27,21 +27,21 @@ public class RequestRest {
     private RequestService requestService;
 
     @GetMapping("/all")
-//    @PreAuthorize("hasAuthority('course:write')")
+    @PreAuthorize("hasAuthority('course:write')")
     public ResponseEntity<List<RequestDTORequest>> requestList() {
         List<RequestDTORequest> requestList = requestService.getAllRequest().get();
         return new ResponseEntity<>(requestList, HttpStatus.OK);
     }
 
     @PostMapping("/addRequest")
-//    @PreAuthorize("hasAuthority('course:read')")
+    @PreAuthorize("hasAuthority('course:read')")
     public ResponseEntity<EnrollRequestStudentToCourse> addRequest(@RequestBody EnrollRequestStudentToCourse enrollRequestStudentToCourse) {
         this.requestService.addRequest(enrollRequestStudentToCourse);
         return new ResponseEntity<>(enrollRequestStudentToCourse, HttpStatus.OK);
     }
 
     @PutMapping("/denied")
-//    @PreAuthorize("hasAuthority('course:write')")
+    @PreAuthorize("hasAuthority('course:write')")
     public ResponseEntity<RequestDTORequest> deniedRequest(@RequestBody RequestDTORequest requestDTORequest) {
         this.requestService.deniedRequest(requestDTORequest);
         return new ResponseEntity<>(requestDTORequest, HttpStatus.OK);
@@ -49,7 +49,7 @@ public class RequestRest {
 
 
     @PutMapping("/accept")
-//    @PreAuthorize("hasAuthority('course:write')")
+    @PreAuthorize("hasAuthority('course:write')")
     public ResponseEntity<RequestDTORequest> acceptRequest(@RequestBody RequestDTORequest requestDTORequest) {
         this.requestService.acceptRequest(requestDTORequest);
         return new ResponseEntity<>(requestDTORequest, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class RequestRest {
 
 
     @DeleteMapping("/delete")
-//    @PreAuthorize("hasAuthority('course:write')")
+    @PreAuthorize("hasAuthority('course:write')")
     public ResponseEntity<EnrollRequestStudentToCourse> deleteRequest(@RequestBody EnrollRequestStudentToCourse enrollRequestStudentToCourse) {
         this.requestService.removeRequest(enrollRequestStudentToCourse);
         return new ResponseEntity<>(enrollRequestStudentToCourse, HttpStatus.OK);

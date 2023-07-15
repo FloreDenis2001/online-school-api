@@ -106,7 +106,6 @@ class BookRepositoryTest {
         find.get().addBook(booksAll.get(2));
         assertEquals(2, bookRepository.lowestPriceBook(18).get().size());
 
-        //todo mapper ca sa compar 2 stringuri!
     }
 
     @Test

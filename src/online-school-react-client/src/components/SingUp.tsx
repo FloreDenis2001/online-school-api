@@ -18,7 +18,7 @@ const SingUp: React.FC = () => {
      let studentService=new StudentService();
 
      let sing = async () =>{
-         let rez= await studentService.singUp({firstName,lastName,age,email,password} as RegisterRequest)
+         let rez= await studentService.singUp({firstName,lastName,age,email,password} as RegisterRequest);
      }
     let navigate = useNavigate();
     

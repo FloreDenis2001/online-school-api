@@ -11,6 +11,7 @@ import ro.mycode.onlineschoolapi.repository.CourseRepo;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -33,9 +34,9 @@ public class CourseService {
     }
 
     public List<Course> getAllCourseByStudent(String email) {
-        Student s = studentRepo.findStudentsByEmail(email).get();
-        if (s != null && s.getEnrolledCourses()!=null) {
-            return s.getEnrolledCourses();
+        Optional<Student> s = studentRepo.findStudentsByEmail(email);
+        if (!s.isEmpty() && s.get().getEnrolledCourses()!=null) {
+            return s.get().getEnrolledCourses();
         } else {
             throw new StudentDosentExist("Studentul nu exista !");
         }
