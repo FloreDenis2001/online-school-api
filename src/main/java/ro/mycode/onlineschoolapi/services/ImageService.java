@@ -20,13 +20,13 @@ public class ImageService {
         this.imageRepo = imageRepo;
     }
 
-    @Transactional
-    public List<Image> getAllListByStudentId(LoginResponse loginResponse) {
-        Optional<List<Image>> images = imageRepo.getAllImageByStudentId(loginResponse.studentId());
-        if (!images.isEmpty()) {
-            return images.get();
-        } else {
-            throw new ImageException("Studentul  nu are imagini !");
-        }
-    }
+//    @Transactional
+//    public List<Image> getAllListByStudentId(LoginResponse loginResponse) {
+//        Optional<List<Image>> images = imageRepo.getAllImageByStudentId(loginResponse.studentId());
+//        if (!images.isEmpty()) {
+//            return images.get();
+//        } else {
+//            throw new ImageException("Studentul  nu are imagini !");
+//        }
+//    }
 }
