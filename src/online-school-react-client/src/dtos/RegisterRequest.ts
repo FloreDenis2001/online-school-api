@@ -6,4 +6,5 @@ export default interface RegisterRequest{
     age:number,
     email:string,
     password:string
+    userRole:string
  }
