@@ -11,31 +11,35 @@ const SingUp: React.FC = () => {
     let { studentLogin, setStudent } = useContext(ContextLogin) as LoginContextType;
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [secondName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [age, setAge] = useState(0);
+    const [role,setRole]= useState("STUDENT");
 
      let studentService=new StudentService();
+     let navigate = useNavigate();
 
      let sing = async () =>{
-         let rez= await studentService.singUp({firstName,lastName,age,email,password} as RegisterRequest);
+        let data = {firstName,secondName,age,email,password,role} as RegisterRequest;
+        let rez= await studentService.singUp(data);
+        navigate("/");
+
      }
-    let navigate = useNavigate();
     
     let goLogin = (): void => {
-        navigate("/login");
+        navigate("/");
     }
     return (
         <main className="sing-up-container">
         <div className="main-sing">
 
             <div className="signup">
-                <form>
+                <div className="form">
                     <label htmlFor="chk" aria-hidden="true">Sign up</label>
                     <input type="text" name="txt" placeholder="First name" value={firstName} onChange={(e)=>{
                             setFirstName(e.target.value);
                         }}/>
-                    <input type="text" name="txt" placeholder="Last name" value={lastName} onChange={(e)=>{
+                    <input type="text" name="txt" placeholder="Last name" value={secondName} onChange={(e)=>{
                             setLastName(e.target.value);
                         }}/>
                     <input type="number" min="18" max="25" name="txt" placeholder="Age" value={age} onChange={(e)=>{
@@ -50,9 +54,9 @@ const SingUp: React.FC = () => {
                         }}/>
                     <button onClick={sing}>Sign up</button>
                     <button onClick={goLogin}>Login</button>
-                </form>
+                <div/>
             </div>
-
+        </div>
         </div>
     </main>
     )

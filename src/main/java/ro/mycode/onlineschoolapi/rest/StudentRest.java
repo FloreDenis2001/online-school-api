@@ -52,8 +52,7 @@ public class StudentRest {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> addStudent(@RequestBody StudentDTO user){
         this.studentService.addStudent(user);
-        Student loginUser=studentService.findStudentByEmail(user.email());
-        Student studentPrincipal=new Student(user.firstName(), user.secondName(), user.email(), user.age(), user.password(),user.role());
+        Student studentPrincipal=studentService.findStudentByEmail(user.email());
         HttpHeaders jwtHeader=getJwtHeader(studentPrincipal);
         Long userId=this.studentService.findStudentByEmail(user.email()).getId();
         RegisterResponse registerResponse=new RegisterResponse(userId, user.firstName(), user.secondName(), user.email(),user.age(),jwtHeader.getFirst(JWT_TOKEN_HEADER));
@@ -76,16 +75,17 @@ public class StudentRest {
 
 
     @PostMapping("/enrollCourseToAStudent")
-    public ResponseEntity<EnrollRequestStudentToCourse> addCourseToAStudent(@RequestBody EnrollRequestStudentToCourse enrollRequestStudentToCourse) {
-        studentService.addCourse(enrollRequestStudentToCourse);
-        return new ResponseEntity<>(enrollRequestStudentToCourse, HttpStatus.CREATED);
+    @PreAuthorize("hasAuthority('course:write')")
+    public ResponseEntity<CourseRequest> addCourseToAStudent(@RequestBody CourseRequest courseRequest) {
+        studentService.addEnrolment(courseRequest);
+        return new ResponseEntity<>(courseRequest, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/cancelCourse")
     @PreAuthorize("hasAuthority('course:write')")
-    public ResponseEntity<EnrollRequestStudentToCourse> cancelCourseToAStudent(@RequestBody EnrollRequestStudentToCourse enrollRequestStudentToCourse) {
-        studentService.removeEnrolment(enrollRequestStudentToCourse);
-        return new ResponseEntity<>(enrollRequestStudentToCourse, HttpStatus.OK);
+    public ResponseEntity<CourseRequest> cancelCourseToAStudent(@RequestBody CourseRequest courseRequest) {
+        studentService.removeEnrolment(courseRequest);
+        return new ResponseEntity<>(courseRequest, HttpStatus.OK);
     }
 
     @GetMapping("/bestCourse")

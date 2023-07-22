@@ -1,20 +1,39 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ContextLogin } from '../context/LoginProvider';
 import LoginContextType from '../models/LoginContextType';
 import { Image } from 'react-bootstrap';
 import Header from './Header';
 import Footer from './Footer';
 import AddBook from './AddBook';
+import AddCourse from './AddCourse';
 const Profile : React.FC = () => {
   const { studentLogin, setStudent } = useContext(ContextLogin) as LoginContextType;
   const [showAddedModal, setShowAddedModal] = useState(false);
+  const [showAddedCourseModal,setShowAddedCourseModal]=useState(false);
+  let [isAdmin,setAdmin]=useState(false);
 
+
+  const handleRole=async ():Promise<void>=>{
+    if(studentLogin.userRole=="ADMIN"){
+          setAdmin(true);
+    }
+  }
+
+
+  useEffect(()=>{
+    handleRole();
+  },[]);
+  
   const handleAddBook = (): void => {
     setShowAddedModal(true);
+};
+  const handleAddCourse = (): void => {
+    setShowAddedCourseModal(true);
 };
 
 const handleCloseModal = (): void => {
     setShowAddedModal(false);
+    setShowAddedCourseModal(false);
 };
 
   return (
@@ -29,9 +48,16 @@ const handleCloseModal = (): void => {
         <p>Email : {studentLogin.email}</p>
       </div>
       <button className='book-add' onClick={handleAddBook}>Add Book</button>
+      <button className='book-add' onClick={handleAddCourse}>Add Course</button>
+
+ 
       {showAddedModal && (
                 <AddBook  handleCloseModal={handleCloseModal} />
-      )}
+      )}  
+         {showAddedCourseModal && (
+        <AddCourse handleCloseModal={handleCloseModal} />
+)}
+
     </div>
     <Footer />
     </>

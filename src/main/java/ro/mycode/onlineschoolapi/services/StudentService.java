@@ -1,9 +1,6 @@
 package ro.mycode.onlineschoolapi.services;
 
-import ro.mycode.onlineschoolapi.dto.CreateBookRequest;
-import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
-import ro.mycode.onlineschoolapi.dto.StudentDTO;
-import ro.mycode.onlineschoolapi.dto.StudentRequest;
+import ro.mycode.onlineschoolapi.dto.*;
 import ro.mycode.onlineschoolapi.exception.*;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
@@ -13,6 +10,7 @@ import ro.mycode.onlineschoolapi.repository.CourseRepo;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import ro.mycode.onlineschoolapi.security.UserRole;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -59,6 +57,11 @@ public class StudentService {
         Optional<Student> student = studentRepo.findStudentsByEmail(s.email());
         if (student.isEmpty()) {
             Student stud = new Student(s.firstName(), s.secondName(), s.email(), s.age(), s.password());
+            if(s.role().compareTo("ADMIN")==0){
+                stud.setUserRole(UserRole.ADMIN);
+            }else if (s.role().compareTo("STUDENT")==0){
+                stud.setUserRole(UserRole.STUDENT);
+            }
             studentRepo.saveAndFlush(stud);
         } else {
             throw new StudentAlreadyExist("Studentul exista deja!");
@@ -103,37 +106,40 @@ public class StudentService {
 
     @Transactional
     @Modifying
-    public void addCourse(EnrollRequestStudentToCourse enrollRequestStudentToCourse) throws StatusCourseException, StudentDosentExist {
-        Optional<Course> course = courseRepo.findById(enrollRequestStudentToCourse.getIdCourse());
+    public void addEnrolment(CourseRequest courseRequest) throws StatusCourseException, StudentDosentExist {
+        Optional<Course> course = courseRepo.getCourseByDepartamentAndName(courseRequest.department(), courseRequest.name());
         if (course.isEmpty()) {
-            throw new StatusCourseException("Cursul nu exista ! ");
+            Course courseItem=new Course(courseRequest.name(), courseRequest.department());
+            courseRepo.saveAndFlush(courseItem);
         }
 
-        Optional<Student> student = studentRepo.findById(enrollRequestStudentToCourse.getIdStudent());
+        Optional<Student> student = studentRepo.findById(courseRequest.studentId());
         if (student.isEmpty()) {
             throw new StudentDosentExist("Studentul nu exista ! ");
         }
 
+        Optional<Course> courseFind = courseRepo.getCourseByDepartamentAndName(courseRequest.department(), courseRequest.name());
+
         List<Course> courses = student.get().getEnrolledCourses();
         for (Course t : courses)
-            if (t.equals(course.get())) {
+            if (t.equals(courseFind.get())) {
                 throw new StatusCourseException("Enrolmentul exista deja ! ");
             }
 
 
-        student.get().addCourse(course.get());
+        student.get().addCourse(courseFind.get());
         studentRepo.saveAndFlush(student.get());
     }
 
     @Transactional
     @Modifying
-    public void removeEnrolment(EnrollRequestStudentToCourse enrollRequestStudentToCourse) throws StatusCourseException, StudentDosentExist {
-        Optional<Student> student = studentRepo.findById(enrollRequestStudentToCourse.getIdStudent());
+    public void removeEnrolment(CourseRequest courseRequest) throws StatusCourseException, StudentDosentExist {
+        Optional<Student> student = studentRepo.findById(courseRequest.studentId());
         if (student.isEmpty()) {
             throw new StudentDosentExist("Studentul nu exista ! ");
         }
 
-        Optional<Course> course = courseRepo.findById(enrollRequestStudentToCourse.getIdCourse());
+        Optional<Course> course = courseRepo.getCourseByDepartamentAndName(courseRequest.department(), courseRequest.name());
         if (course.isEmpty()) {
             throw new StatusCourseException("Cursul nu exista !");
         }
