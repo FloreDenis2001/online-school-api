@@ -64,7 +64,7 @@ public class Student implements UserDetails {
     @Enumerated
     @Column(name = "role",
             nullable = false)
-    UserRole userRole=UserRole.STUDENT;
+    UserRole userRole;
 
     @OneToMany(
             mappedBy = "student",

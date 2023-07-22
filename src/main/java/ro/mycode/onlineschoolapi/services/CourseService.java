@@ -1,11 +1,15 @@
 package ro.mycode.onlineschoolapi.services;
 
 import org.springframework.stereotype.Service;
+import ro.mycode.onlineschoolapi.dto.CourseRequest;
+import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
 import ro.mycode.onlineschoolapi.dto.LoginResponse;
 import ro.mycode.onlineschoolapi.exception.EmptyDataBase;
+import ro.mycode.onlineschoolapi.exception.RequestAlreadyExist;
 import ro.mycode.onlineschoolapi.exception.StudentDosentExist;
 import ro.mycode.onlineschoolapi.model.Book;
 import ro.mycode.onlineschoolapi.model.Course;
+import ro.mycode.onlineschoolapi.model.Request;
 import ro.mycode.onlineschoolapi.model.Student;
 import ro.mycode.onlineschoolapi.repository.CourseRepo;
 import ro.mycode.onlineschoolapi.repository.StudentRepo;
@@ -41,6 +45,4 @@ public class CourseService {
             throw new StudentDosentExist("Studentul nu exista !");
         }
     }
-
-
 }

@@ -1,10 +1,7 @@
 package ro.mycode.onlineschoolapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -20,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Data
 public class Course {
 
     @Id
@@ -47,6 +45,11 @@ public class Course {
     @ManyToMany(mappedBy = "enrolledCourses", fetch = FetchType.EAGER)
     @JsonBackReference
     List<Student> students = new ArrayList<>();
+
+    public Course(String name, String department) {
+        this.name=name;
+        this.department=department;
+    }
 
     @Override
     public boolean equals(Object o) {

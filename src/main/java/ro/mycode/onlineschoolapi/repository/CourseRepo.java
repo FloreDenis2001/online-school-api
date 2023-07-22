@@ -15,7 +15,7 @@ public interface CourseRepo extends JpaRepository<Course,Long> {
     Optional<List<Course>> getCoursesOrderByDepartmentAsc();
 
     @Query("select c from Course c where c.department=?1 and c.name=?2")
-    Optional<Course> getAllCoursesByDepartamentAndName(String departament,String name);
+    Optional<Course> getCourseByDepartamentAndName(String departament,String name);
 
 
 

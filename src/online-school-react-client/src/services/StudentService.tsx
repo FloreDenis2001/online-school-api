@@ -7,6 +7,7 @@ import { ZhihuCircleFilled } from "@ant-design/icons";
 import RegisterResponse from "../dtos/RegisterResponse";
 import RegisterRequest from "../dtos/RegisterRequest";
 import BookRequest from "../models/BookRequest";
+import CourseRequest from "../dtos/CourseRequest";
 class StudentService {
 
     api<U, T>(path: string, method: string, body: U, token?: string): Promise<HttpResponse<T>> {
@@ -52,6 +53,20 @@ class StudentService {
           }
      }}
 
+     addCourse = async (token:string , course:CourseRequest) => {
+      let data = await this.api<CourseRequest,CourseRequest>("/enrollCourseToAStudent","POST",course,token);
+      try {
+        if (data.status === 200) {
+          return course;
+        } else {
+          throw new Error("Cursul exista deja !");
+        }
+      } catch (e) {
+        return {
+          ...data,
+          message: "Wrong fetch !"
+        }
+   }}
 
       
 

@@ -8,6 +8,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ro.mycode.onlineschoolapi.dto.CourseRequest;
 import ro.mycode.onlineschoolapi.dto.CreateBookRequest;
 import ro.mycode.onlineschoolapi.dto.EnrollRequestStudentToCourse;
 import ro.mycode.onlineschoolapi.dto.StudentDTO;
@@ -149,101 +150,101 @@ class StudentServiceTest {
 
     @Test
     void addCourse() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
+        CourseRequest courseRequest = new CourseRequest("IT", "Java Developer", 1L);
+
         Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
         Optional<Student> student = Optional.of(s);
-        doReturn(student).when(studentRepo).findById(enrollRequestStudentToCourse.getIdStudent());
+        doReturn(student).when(studentRepo).findById(courseRequest.studentId());
         Course course = new Course().builder().department("IT").name("Java Developer").build();
         Optional<Course> courseOptional = Optional.of(course);
-        doReturn(courseOptional).when(courseRepo).findById(enrollRequestStudentToCourse.getIdCourse());
-        studentService.addCourse(enrollRequestStudentToCourse);
+        doReturn(courseOptional).when(courseRepo).getCourseByDepartamentAndName(courseRequest.department(),courseRequest.name());
+        studentService.addEnrolment(courseRequest);
         assertEquals("Java Developer", student.get().getEnrolledCourses().get(0).getName());
     }
 
-    @Test
-    void addCourseException() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
-        doReturn(Optional.empty()).when(courseRepo).findById(enrollRequestStudentToCourse.getIdCourse());
-        assertThrows(StatusCourseException.class, () -> {
-            studentService.addCourse(enrollRequestStudentToCourse);
-        });
-    }
+
+
 
     @Test
     void addCourseException2() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
+        CourseRequest courseRequest = new CourseRequest("IT", "Java Developer", 1L);
+
         Course course = new Course().builder().department("IT").name("Java Developer").build();
         Optional<Course> courseOptional = Optional.of(course);
-        doReturn(courseOptional).when(courseRepo).findById(enrollRequestStudentToCourse.getIdCourse());
-        doReturn(Optional.empty()).when(studentRepo).findById(enrollRequestStudentToCourse.getIdStudent());
+        doReturn(courseOptional).when(courseRepo).getCourseByDepartamentAndName(courseRequest.department(),courseRequest.name());
+        doReturn(Optional.empty()).when(studentRepo).findById(courseRequest.studentId());
 
         assertThrows(StudentDosentExist.class, () -> {
-            studentService.addCourse(enrollRequestStudentToCourse);
+            studentService.addEnrolment(courseRequest);
         });
     }
 
     @Test
     void addCourseException3() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
+        CourseRequest courseRequest = new CourseRequest("IT", "Java Developer", 1L);
+
         Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
         Optional<Student> student = Optional.of(s);
-        doReturn(student).when(studentRepo).findById(enrollRequestStudentToCourse.getIdStudent());
+        doReturn(student).when(studentRepo).findById(courseRequest.studentId());
         Course course = new Course().builder().department("IT").name("Java Developer").build();
         Optional<Course> courseOptional = Optional.of(course);
-        doReturn(courseOptional).when(courseRepo).findById(enrollRequestStudentToCourse.getIdCourse());
-        studentService.addCourse(enrollRequestStudentToCourse);
+        doReturn(courseOptional).when(courseRepo).getCourseByDepartamentAndName(courseRequest.department(),courseRequest.name());
+        studentService.addEnrolment(courseRequest);
         assertThrows(StatusCourseException.class, () -> {
-            studentService.addCourse(enrollRequestStudentToCourse);
+            studentService.addEnrolment(courseRequest);
         });
     }
 
     @Test
     void removeEnrolment() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
+        CourseRequest courseRequest=new CourseRequest("Algebra","Matematica",1L);
         Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
         Optional<Student> student = Optional.of(s);
-        doReturn(student).when(studentRepo).findById(enrollRequestStudentToCourse.getIdStudent());
+        doReturn(student).when(studentRepo).findById(courseRequest.studentId());
         Course course = new Course().builder().department("IT").name("Java Developer").build();
         Optional<Course> courseOptional = Optional.of(course);
-        doReturn(courseOptional).when(courseRepo).findById(enrollRequestStudentToCourse.getIdCourse());
-        studentService.addCourse(enrollRequestStudentToCourse);
-        studentService.removeEnrolment(enrollRequestStudentToCourse);
+        doReturn(courseOptional).when(courseRepo).getCourseByDepartamentAndName(courseRequest.department(),courseRequest.name());
+        studentService.addEnrolment(courseRequest);
+        studentService.removeEnrolment(courseRequest);
         assertEquals(new ArrayList<>(), student.get().getEnrolledCourses());
     }
 
     @Test
     void removeEnrolmentException() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
-        doReturn(Optional.empty()).when(studentRepo).findById(enrollRequestStudentToCourse.getIdStudent());
+        CourseRequest courseRequest=new CourseRequest("Algebra","Matematica",1L);
+
+        doReturn(Optional.empty()).when(studentRepo).findById(courseRequest.studentId());
         assertThrows(StudentDosentExist.class, () -> {
-            studentService.removeEnrolment(enrollRequestStudentToCourse);
+            studentService.removeEnrolment(courseRequest);
         });
     }
 
     @Test
     void removeEnrolmentException2() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
+        CourseRequest courseRequest=new CourseRequest("Algebra","Matematica",1L);
+
         Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
         Optional<Student> student = Optional.of(s);
-        doReturn(student).when(studentRepo).findById(enrollRequestStudentToCourse.getIdStudent());
+        doReturn(student).when(studentRepo).findById(courseRequest.studentId());
         Course course = new Course().builder().department("IT").name("Java Developer").build();
         Optional<Course> courseOptional = Optional.of(course);
-        doReturn(courseOptional).when(courseRepo).findById(enrollRequestStudentToCourse.getIdCourse());
+        doReturn(courseOptional).when(courseRepo).getCourseByDepartamentAndName(courseRequest.department(),courseRequest.name());
         assertThrows(StatusCourseException.class, () -> {
-            studentService.removeEnrolment(enrollRequestStudentToCourse);
+            studentService.removeEnrolment(courseRequest);
         });
     }
 
     @Test
     void removeEnrolmentException3() {
-        EnrollRequestStudentToCourse enrollRequestStudentToCourse = new EnrollRequestStudentToCourse().builder().idCourse(1L).idStudent(1L).build();
+        CourseRequest courseRequest=new CourseRequest("Algebra","Matematica",1L);
+
         Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
         Optional<Student> student = Optional.of(s);
-        doReturn(student).when(studentRepo).findById(enrollRequestStudentToCourse.getIdStudent());
+        doReturn(student).when(studentRepo).findById(courseRequest.studentId());
         Course course = new Course().builder().department("IT").name("Java Developer").build();
-        doReturn(Optional.empty()).when(courseRepo).findById(enrollRequestStudentToCourse.getIdCourse());
+        doReturn(Optional.empty()).when(courseRepo).getCourseByDepartamentAndName(courseRequest.department(),courseRequest.name());
         assertThrows(StatusCourseException.class, () -> {
-            studentService.removeEnrolment(enrollRequestStudentToCourse);
+            studentService.removeEnrolment(courseRequest);
         });
     }
 
@@ -290,7 +291,7 @@ class StudentServiceTest {
 
     @Test
     void addStudentTest() {
-        StudentDTO studentDTO = new StudentDTO("Flore", "Denis", "denis@yahoo.com", 21, "parola", UserRole.STUDENT);
+        StudentDTO studentDTO = new StudentDTO("Flore", "Denis", "denis@yahoo.com", 21, "parola","STUDENT");
         studentService.addStudent(studentDTO);
         Student s = new Student().builder().id(1L).age(21).email("denis@yahoo.com").firstName("Flore").secondName("Denis").build();
         doReturn(Optional.of(s)).when(studentRepo).findStudentsByEmail("denis@yahoo.com");
@@ -301,7 +302,7 @@ class StudentServiceTest {
 
     @Test
     void addStudentTestException() {
-        StudentDTO studentDTO = new StudentDTO("Flore", "Denis", "denis@yahoo.com", 21, "parola", UserRole.STUDENT);
+        StudentDTO studentDTO = new StudentDTO("Flore", "Denis", "denis@yahoo.com", 21, "parola","STUDENT");
 
         doReturn(Optional.of(new Student())).when(studentRepo).findStudentsByEmail("denis@yahoo.com");
 
