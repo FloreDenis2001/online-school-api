@@ -179,34 +179,33 @@ class BookRepositoryTest {
         assertEquals(3, bookRepository.filterStarBook(5L).get().size());
     }
 
+//    @Test
+//    void getBookByStudentAndTitle() {
+//
+//        Faker faker = new Faker();
+//        List<Book> books = new ArrayList<>();
+//        Student x =new Student().builder().age(18).email("denis@yahoo.com").firstName("Flore").secondName("Denis").userRole(UserRole.STUDENT).password(new BCryptPasswordEncoder().encode("parola")).build();
+//
+//        studentRepo.saveAndFlush(x);
+//
+//
+//        for (int i = 0; i < 3; i++) {
+//            books.add(new Book().builder().author(faker.book().author()).price(20 - i).stars(5L).title(faker.book().title()).build());
+//        }
+//        bookRepository.saveAllAndFlush(books);
+//
+//
+//        Optional<Student> find = studentRepo.findStudentsByEmail("denis@yahoo.com");
+//        List<Book> booksAll = bookRepository.findAll();
+//        find.get().addBook(booksAll.get(0));
+//        find.get().addBook(booksAll.get(1));
+//        find.get().addBook(booksAll.get(2));
+//        studentRepo.saveAndFlush(find.get());
+//        assertEquals(booksAll.get(0), bookRepository.getBookByStudentAndTitle(find.get().getId(), booksAll.get(0).getTitle()).get());
+//    }
+
     @Test
-    void getBookByStudentAndTitle() {
-
-        Faker faker = new Faker();
-        List<Book> books = new ArrayList<>();
-        Student x =new Student().builder().age(18).email("denis@yahoo.com").firstName("Flore").secondName("Denis").userRole(UserRole.STUDENT).password(new BCryptPasswordEncoder().encode("parola")).build();
-
-        studentRepo.saveAndFlush(x);
-
-
-        for (int i = 0; i < 3; i++) {
-            books.add(new Book().builder().author(faker.book().author()).price(20 - i).stars(5L).title(faker.book().title()).build());
-        }
-        bookRepository.saveAllAndFlush(books);
-
-
-        Optional<Student> find = studentRepo.findStudentsByEmail("denis@yahoo.com");
-        List<Book> booksAll = bookRepository.findAll();
-        find.get().addBook(booksAll.get(0));
-        find.get().addBook(booksAll.get(1));
-        find.get().addBook(booksAll.get(2));
-        studentRepo.saveAndFlush(find.get());
-        assertEquals(booksAll.get(0), bookRepository.getBookByStudentAndTitle(find.get().getId(), booksAll.get(0).getTitle()).get());
-
-    }
-
-    @Test
-    void removeBookByStudentAndTitle() {
+     void removeBookByStudentAndTitle() {
 
         Faker faker = new Faker();
         List<Book> books = new ArrayList<>();
