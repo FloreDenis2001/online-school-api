@@ -36,7 +36,7 @@ public class OnlineSchoolApiApplication {
     @Bean
     CommandLineRunner commandLineRunner(StudentRepo studentRepo,BookService bookService, StudentService studentService, CourseService courseService) {
         return args -> {
-
+            System.out.println("Hello");
 //            Student student=new Student();
 //            student.setFirstName("Denis");
 //            student.setSecondName("Flore");
