@@ -6,6 +6,9 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: write
 env:
   # MYSQL
   MYSQL_DB: online_school_db
