@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    image: "floredenis2001/online-school-app:26.8.2023.7.6.50"
+    image: "floredenis2001/online-school-app:26.8.2023.7.37.13"
     ports:
       - "80:8080"
     restart: "always"
